@@ -9,8 +9,19 @@ void main() {
 }
 
 class SkillList extends StatefulWidget{
+  const SkillList(this.entry);
+  final Entry entry;
+
   @override
   _SkillState createState() => new _SkillState();
+}
+
+// One entry in the multilevel list displayed by this app.
+class Entry {
+  Entry(this.isCheck, this.title, [this.children = const <Entry>[]]);
+  final String title;
+  final List<Entry> children;
+  bool isCheck;
 }
 
 class _SkillState extends State<SkillList>{
@@ -24,15 +35,17 @@ void initState(){
   super.initState();
 }
 
-  Widget _buildTiles() {
+  Widget _buildTiles(Entry root) {
+
   return new Scaffold(
     body: new ListView(
       children: new List.generate(18, (i){
+        if (root.children.isEmpty)
         return new Column(
           children: <Widget>[
             new CheckboxListTile(
               title: new Text(
-                'skillTile',
+                root.title,
                 style: new TextStyle(fontSize: 14.0),
               ),
               value: items[i]['isChecked'],
@@ -45,23 +58,20 @@ void initState(){
             new Divider(height: 16.0, indent: 0.0),
           ],
         );
+        return new ExpansionTile(
+          key: new PageStorageKey<Entry>(root),
+          title: new Text(root.title),
+          children: root.children.map(_buildTiles).toList(),
+        );
       }),
     ),  );
   }
 
   @override
   Widget build(BuildContext context) {
-    return _buildTiles();
+    return _buildTiles(entry);
   }
 
-}
-
-// One entry in the multilevel list displayed by this app.
-class Entry {
-  Entry(this.isCheck, this.title, [this.children = const <Entry>[]]);
-  final String title;
-  final List<Entry> children;
-  bool isCheck;
 }
 
 // The entire multilevel list displayed by this app.
