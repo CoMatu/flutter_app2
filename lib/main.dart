@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
-
+// run app
 void main() {
-  runApp(new MaterialApp(
-    title: 'Характеристика',
-    home: new SkillList(),
-  )
-  );
+runApp(new SkillList());
 }
-
-class SkillList extends StatefulWidget{
-  const SkillList(this.entry);
-  final Entry entry;
+// return one oject SkillList
+class SkillList extends StatefulWidget {
+  const SkillList({
+    this.isCheck,
+    this.title,
+    final List<Entry> children
+  });
+  final bool isCheck;
+  final String title;
 
   @override
-  _SkillState createState() => new _SkillState();
+  _SkillListState createState() => new _SkillListState();
+
+}
+
+class _SkillListState extends State<SkillList> {
+  final SkillList entry;
+
+  @override
+  Widget build(BuildContext context) {
+  return _SkillListTiles(entry);
+  }
+
+  Widget _SkillListTiles(SkillList root) {
+
+  }
+
 }
 
 // One entry in the multilevel list displayed by this app.
@@ -21,57 +37,7 @@ class Entry {
   Entry(this.isCheck, this.title, [this.children = const <Entry>[]]);
   final String title;
   final List<Entry> children;
-  bool isCheck;
-}
-
-class _SkillState extends State<SkillList>{
-List items;
-
-@override
-void initState(){
-  items=  new List.generate(20, (i)=>
-  {'title':'title$i','isChecked':false}
-  );
-  super.initState();
-}
-
-  Widget _buildTiles(Entry root) {
-
-  return new Scaffold(
-    body: new ListView(
-      children: new List.generate(18, (i){
-        if (root.children.isEmpty)
-        return new Column(
-          children: <Widget>[
-            new CheckboxListTile(
-              title: new Text(
-                root.title,
-                style: new TextStyle(fontSize: 14.0),
-              ),
-              value: items[i]['isChecked'],
-              onChanged: (bool value) {
-                setState(() {
-                  items[i]['isChecked'] = value;
-                });
-              },
-            ),
-            new Divider(height: 16.0, indent: 0.0),
-          ],
-        );
-        return new ExpansionTile(
-          key: new PageStorageKey<Entry>(root),
-          title: new Text(root.title),
-          children: root.children.map(_buildTiles).toList(),
-        );
-      }),
-    ),  );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildTiles(entry);
-  }
-
+  final bool isCheck;
 }
 
 // The entire multilevel list displayed by this app.
