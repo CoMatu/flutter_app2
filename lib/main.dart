@@ -1,47 +1,83 @@
 import 'package:flutter/material.dart';
 // run app
-void main() {
-runApp(new SkillList());
-}
-// return one oject SkillList
-class SkillList extends StatefulWidget {
-  const SkillList({
-    this.isCheck,
-    this.title,
-    final List<Entry> children
-  });
-  final bool isCheck;
-  final String title;
+void main() => runApp(new ExpansionTileSample());
 
+class ExpansionTileSample extends StatelessWidget {
   @override
-  _SkillListState createState() => new _SkillListState();
-
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      home: new Scaffold(
+        appBar: new AppBar(
+          title: const Text('ExpansionTile'),
+        ),
+        body: new ListView.builder(
+          itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
+          itemCount: data.length,
+        ),
+      ),
+    );
+  }
 }
 
-class _SkillListState extends State<SkillList> {
-  final SkillList entry;
+class EntryItem extends StatefulWidget {
+const EntryItem(this.entry);
+final Entry entry;
+  @override
+  _EntryItemState createState() {
+    return new _EntryItemState(entry);
+  }
+}
+
+class _EntryItemState extends State<EntryItem> {
+
+  Entry entry;
+
+  _EntryItemState(this.entry);
+
+  Widget _buildTiles(Entry root) {
+    if (root.children.isEmpty)
+      return new Column(
+        children: <Widget>[
+          new CheckboxListTile(
+            title: new Text(
+              root.title,
+              style: new TextStyle(fontSize: 14.0),
+            ),
+            value: entry.isCheck,
+            onChanged: (bool value) {
+              setState(() {
+                entry.isCheck = value;
+              });
+            },
+          ),
+          new Divider(height: 16.0, indent: 0.0),
+        ],
+      );
+
+//      return new Divider();
+    return new ExpansionTile(
+      key: new PageStorageKey<Entry>(root),
+      title: new Text(root.title),
+      children: root.children.map(_buildTiles).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-  return _SkillListTiles(entry);
+    return _buildTiles(entry);
   }
-
-  Widget _SkillListTiles(SkillList root) {
-
-  }
-
 }
 
 // One entry in the multilevel list displayed by this app.
 class Entry {
   Entry(this.isCheck, this.title, [this.children = const <Entry>[]]);
   final String title;
-  final List<Entry> children;
-  final bool isCheck;
+  List<Entry> children;
+  bool isCheck;
 }
 
 // The entire multilevel list displayed by this app.
-final List<Entry> data = <Entry>[
+List<Entry> data = <Entry>[
   new Entry(false,
     ' Компетентность',
     <Entry>[
