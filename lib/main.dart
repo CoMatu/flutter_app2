@@ -8,7 +8,7 @@ class ExpansionTileSample extends StatelessWidget {
     return new MaterialApp(
       home: new Scaffold(
         appBar: new AppBar(
-          title: const Text('ExpansionTile'),
+          title: const Text('Выберите деловые качества:'),
         ),
         body: new ListView.builder(
           itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
@@ -20,8 +20,8 @@ class ExpansionTileSample extends StatelessWidget {
 }
 
 class EntryItem extends StatefulWidget {
-const EntryItem(this.entry);
-final Entry entry;
+  final Entry entry;
+  const EntryItem(this.entry);
   @override
   _EntryItemState createState() {
     return new _EntryItemState(entry);
@@ -31,8 +31,9 @@ final Entry entry;
 class _EntryItemState extends State<EntryItem> {
 
   Entry entry;
-
-  _EntryItemState(this.entry);
+  _EntryItemState(Entry entry){
+    this.entry = entry;
+  }
 
   Widget _buildTiles(Entry root) {
     if (root.children.isEmpty)
