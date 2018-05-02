@@ -11,6 +11,7 @@ class ExpansionTileSample extends StatelessWidget {
           title: const Text('Выберите деловые качества:'),
         ),
         body: new ListView.builder(
+          key: key,
           itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
           itemCount: data.length,
         ),
@@ -44,10 +45,10 @@ class _EntryItemState extends State<EntryItem> {
               root.title,
               style: new TextStyle(fontSize: 14.0),
             ),
-            value: entry.isCheck,
+            value: root.isChecked,
             onChanged: (bool value) {
               setState(() {
-                entry.isCheck = value;
+                root.isChecked = value;
               });
             },
           ),
@@ -71,10 +72,10 @@ class _EntryItemState extends State<EntryItem> {
 
 // One entry in the multilevel list displayed by this app.
 class Entry {
-  Entry(this.isCheck, this.title, [this.children = const <Entry>[]]);
+  Entry(this.isChecked, this.title, [this.children = const <Entry>[]]);
   final String title;
   List<Entry> children;
-  bool isCheck;
+  bool isChecked;
 }
 
 // The entire multilevel list displayed by this app.
