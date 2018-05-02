@@ -31,6 +31,9 @@ class EntryItem extends StatefulWidget {
 
 class _EntryItemState extends State<EntryItem> {
 
+  //TODO: Сделать условие для выбора только ОДНОГО чекбокса
+  //TODO: Сделать запись выбранных отметов в базу данных? массив?
+
   Entry entry;
   _EntryItemState(Entry entry){
     this.entry = entry;
