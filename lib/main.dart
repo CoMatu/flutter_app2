@@ -10,10 +10,17 @@ class ExpansionTileSample extends StatelessWidget {
         appBar: new AppBar(
           title: const Text('Выберите деловые качества:'),
         ),
-        body: new ListView.builder(
-          key: key,
-          itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
-          itemCount: data.length,
+        body: new Container(
+          child: new Column(
+            children: <Widget>[
+              new Expanded(
+                  child: new ListView.builder(
+                    itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
+                    itemCount: data.length,
+                  ),
+              )
+            ],
+          )
         ),
       ),
     );
@@ -30,7 +37,6 @@ class EntryItem extends StatefulWidget {
 }
 
 class _EntryItemState extends State<EntryItem> {
-
   //TODO: Сделать условие для выбора только ОДНОГО чекбокса
   //TODO: Сделать запись выбранных отметов в базу данных? массив?
 
@@ -58,13 +64,13 @@ class _EntryItemState extends State<EntryItem> {
           new Divider(height: 16.0, indent: 0.0),
         ],
       );
-
 //      return new Divider();
     return new ExpansionTile(
       key: new PageStorageKey<Entry>(root),
       title: new Text(root.title),
       children: root.children.map(_buildTiles).toList(),
     );
+
   }
 
   @override
