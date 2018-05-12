@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 // run app
 void main() => runApp(new ExpansionTileSample());
 
+
 class ExpansionTileSample extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -10,7 +12,8 @@ class ExpansionTileSample extends StatelessWidget {
         appBar: new AppBar(
           title: const Text('Выберите деловые качества:'),
         ),
-        body: new Container(
+        body: new Padding(
+          padding: const EdgeInsets.all(8.0),
           child: new Column(
             children: <Widget>[
               new Expanded(
@@ -18,9 +21,17 @@ class ExpansionTileSample extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
                     itemCount: data.length,
                   ),
+              ),
+              new RaisedButton(
+                  onPressed: () {
+                    var nam = Entry;
+                    if(nam != null)
+                    print(nam);
+                  },
+                child: new Text('Save'),
               )
             ],
-          )
+          ),
         ),
       ),
     );
@@ -28,6 +39,7 @@ class ExpansionTileSample extends StatelessWidget {
 }
 
 class EntryItem extends StatefulWidget {
+
   final Entry entry;
   const EntryItem(this.entry);
   @override
@@ -58,6 +70,7 @@ class _EntryItemState extends State<EntryItem> {
             onChanged: (bool value) {
               setState(() {
                 root.isChecked = value;
+                charactToList(root);
               });
             },
           ),
@@ -70,12 +83,20 @@ class _EntryItemState extends State<EntryItem> {
       title: new Text(root.title),
       children: root.children.map(_buildTiles).toList(),
     );
-
   }
 
   @override
   Widget build(BuildContext context) {
     return _buildTiles(entry);
+  }
+  void charactToList (Entry root){
+    if(root.isChecked){
+      character.add(root.title);
+    }
+    if(!root.isChecked){
+      character.remove(root.title);
+    }
+      print(character);
   }
 }
 
@@ -188,3 +209,5 @@ List<Entry> data = <Entry>[
     ],
   ),
 ];
+
+List<String> character = new List();
