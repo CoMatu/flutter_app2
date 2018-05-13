@@ -1,14 +1,58 @@
 import 'package:flutter/material.dart';
-// run app
-void main() => runApp(new ExpansionTileSample());
 
+
+// run app
+void main() => runApp(new MaterialApp(
+    title: 'Характеристика',
+    home: new StartScreen())
+);
+
+class StartScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+      return new Scaffold(
+        appBar: new AppBar(
+          title: const Text('Характеристика'),
+        ),
+        body: new Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: new Center(
+            child: new Column(
+              children: <Widget>[
+                new Text('На следующей странице в раскрывающемся списке выберите одну или несколько компетенций для оценки. Для выбора нажмите "галочку", для отмены - повторное нажатие.',
+                style: new TextStyle(
+                  color: Colors.black87,
+                  fontSize: 22.0
+                ),),
+                new Padding(
+                  padding: const EdgeInsets.all(28.0),
+                  child: new RaisedButton(
+                    child: new Text('Вперед!',
+                    style: new TextStyle(
+                      fontSize: 16.0
+                    ),),
+                      onPressed: () {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => new ExpansionTileSample()),
+                    );
+                  }),
+                )
+              ],
+            ),
+
+          ),
+        ),
+      );
+  }
+}
 
 class ExpansionTileSample extends StatelessWidget {
+  get context => context;
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
+      return new Scaffold(
         appBar: new AppBar(
           title: const Text('Выберите деловые качества:'),
         ),
@@ -24,17 +68,31 @@ class ExpansionTileSample extends StatelessWidget {
               ),
               new RaisedButton(
                   onPressed: () {
-                    var nam = Entry;
-                    if(nam != null)
-                    print(nam);
+                    if(character.length == 0){
+                      showDialog(context: context,
+                      builder: (BuildContext context){
+                        return new AlertDialog(
+                          title: new Text('ВНИМАНИЕ!',
+                          textAlign: TextAlign.center,),
+                          content: new Text('Не выбрано ни одного значения',
+                          textAlign: TextAlign.center,),
+                        );
+                      });
+                    } else
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => new CharacterText()),
+                    );
                   },
-                child: new Text('Save'),
+                child: new Text('Сохранить',
+                style: new TextStyle(
+                  fontSize: 16.0
+                )),
               )
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -50,7 +108,6 @@ class EntryItem extends StatefulWidget {
 
 class _EntryItemState extends State<EntryItem> {
   //TODO: Сделать условие для выбора только ОДНОГО чекбокса
-  //TODO: Сделать запись выбранных отметов в базу данных? массив?
 
   Entry entry;
   _EntryItemState(Entry entry){
@@ -84,7 +141,6 @@ class _EntryItemState extends State<EntryItem> {
       children: root.children.map(_buildTiles).toList(),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return _buildTiles(entry);
@@ -96,7 +152,7 @@ class _EntryItemState extends State<EntryItem> {
     if(!root.isChecked){
       character.remove(root.title);
     }
-      print(character);
+//      print(character);
   }
 }
 
@@ -211,3 +267,26 @@ List<Entry> data = <Entry>[
 ];
 
 List<String> character = new List();
+
+class CharacterText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: const Text('Характеристика'),
+      ),
+      body: new Padding(
+        padding: const EdgeInsets.all(14.0),
+        child: new ListView.builder(
+            itemCount: character.length,
+            itemBuilder: (context, index){
+              return new ListTile(
+                title: new Text(character[index]),
+              );
+            }),
+      ),
+    );
+  }
+
+}
+
