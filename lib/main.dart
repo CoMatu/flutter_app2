@@ -84,7 +84,7 @@ class ExpansionTileSample extends StatelessWidget {
                       new MaterialPageRoute(builder: (context) => new CharacterText()),
                     );
                   },
-                child: new Text('Сохранить',
+                child: new Text('Прочитать текст',
                 style: new TextStyle(
                   fontSize: 16.0
                 )),
@@ -277,13 +277,26 @@ class CharacterText extends StatelessWidget {
       ),
       body: new Padding(
         padding: const EdgeInsets.all(14.0),
-        child: new ListView.builder(
-            itemCount: character.length,
-            itemBuilder: (context, index){
-              return new ListTile(
-                title: new Text(character[index]),
-              );
-            }),
+        child: new Column(
+          children: <Widget>[
+            new Expanded(
+                child: new ListView.builder(
+                    itemCount: character.length,
+                    itemBuilder: (context, index){
+                      return new ListTile(
+                        title: new Text(character[index]),
+                      );
+                    }),
+            ),
+            new RaisedButton(
+              onPressed: () {
+                //TODO записать в файл
+              },
+              child: new Text('Сохранить в файл',
+              style: new TextStyle(fontSize: 16.0),),
+            )
+          ],
+        ),
       ),
     );
   }
