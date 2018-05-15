@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 
 // run app
@@ -73,7 +76,10 @@ class ExpansionTileSample extends StatelessWidget {
                       builder: (BuildContext context){
                         return new AlertDialog(
                           title: new Text('ВНИМАНИЕ!',
-                          textAlign: TextAlign.center,),
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                            color: Colors.red
+                          ),),
                           content: new Text('Не выбрано ни одного значения',
                           textAlign: TextAlign.center,),
                         );
@@ -269,6 +275,7 @@ List<Entry> data = <Entry>[
 List<String> character = new List();
 
 class CharacterText extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -291,6 +298,10 @@ class CharacterText extends StatelessWidget {
             new RaisedButton(
               onPressed: () {
                 //TODO записать в файл
+                for(var i = 0; i < character.length; i++){
+                  String content = character[i];
+                  CharacterStorage().writeCaracter(content);
+                }
               },
               child: new Text('Сохранить в файл',
               style: new TextStyle(fontSize: 16.0),),
@@ -303,3 +314,36 @@ class CharacterText extends StatelessWidget {
 
 }
 
+class CharacterStorage {
+  String filename = 'characterist.txt';
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return new File('$path/$filename');
+  }
+
+  Future<String> readCounter() async {
+    try {
+      final file = await _localFile;
+
+      // Read the file
+      String contents = await file.readAsString();
+
+      return contents;
+    } catch (e) {
+      return 'READING FILE ERROR';
+    }
+  }
+
+  Future<File> writeCaracter(String content) async {
+    final file = await _localFile;
+    // Write the file
+    return file.writeAsString('$content', mode: FileMode.APPEND);
+  }
+}
