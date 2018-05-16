@@ -37,7 +37,7 @@ class StartScreen extends StatelessWidget {
                       onPressed: () {
                     Navigator.push(
                       context,
-                      new MaterialPageRoute(builder: (context) => new ExpansionTileSample()),
+                      new MaterialPageRoute(builder: (context) => new CharacteristicSkills()),
                     );
                   }),
                 )
@@ -50,7 +50,7 @@ class StartScreen extends StatelessWidget {
   }
 }
 
-class ExpansionTileSample extends StatelessWidget {
+class CharacteristicSkills extends StatelessWidget {
   get context => context;
 
   @override
@@ -297,15 +297,39 @@ class CharacterText extends StatelessWidget {
             ),
             new RaisedButton(
               onPressed: () {
-                String content = character.join("\n");
-                //TODO записать в файл
-/*
-                for(var i = 0; i < character.length; i++){
-                  content = content+'\n'+character[i]+'\n';
-                }
-*/
-               CharacteristStorage().writeCaracter(content);
+                //TODO вывести диалог для ввода имени файла
+                String filename = 'Введите имя файла:';
 
+                showDialog(context: context,
+                builder: (BuildContext context){
+                  return new AlertDialog(
+                    title: new Text(filename),
+                    content: new TextField(
+                      decoration: new InputDecoration(
+                        hintText: 'имя файла'
+                      ),
+                    ),
+                    actions: <Widget>[
+                      new FlatButton(
+                          onPressed: (){
+
+                          },
+                          child: new Text('Отмена',
+                          style: new TextStyle(
+                            color: Colors.red
+                          ),)
+                      ),
+                      new FlatButton(
+                          onPressed: (){
+
+                          },
+                          child: new Text('Сохранить'))
+                    ],
+                  );
+                }
+                );
+                String content = character.join("\n");
+                CharacteristicsStorage().writeCharacteristic(content);
               },
               child: new Text('Сохранить в файл',
               style: new TextStyle(fontSize: 16.0),),
@@ -318,8 +342,8 @@ class CharacterText extends StatelessWidget {
 
 }
 
-class CharacteristStorage {
-  String filename = 'characterist.txt';
+class CharacteristicsStorage {
+  String filename = 'characteristic.txt';
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -332,7 +356,7 @@ class CharacteristStorage {
     return new File('$path/$filename');
   }
 
-  Future<String> readCounter() async {
+  Future<String> readCharacteristic() async {
     try {
       final file = await _localFile;
 
@@ -345,9 +369,44 @@ class CharacteristStorage {
     }
   }
 
-  Future<File> writeCaracter(String content) async {
+  Future<File> writeCharacteristic(String content) async {
     final file = await _localFile;
     // Write the file
     return file.writeAsString('$content');
   }
 }
+
+
+
+/*
+class FileNameDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    var filename = 'Выберите имя файла';
+
+    showDialog(
+        context: context,
+      builder: (BuildContext context) {
+         new SimpleDialog(
+          title: new Text(filename),
+          children: <Widget>[
+            new SimpleDialogOption(
+              onPressed: () {
+
+              },
+            ),
+            new TextField(
+              decoration: new InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'введите имя файла'
+              ),
+            )
+          ],
+        );
+
+      }
+    );
+  }
+
+}*/
