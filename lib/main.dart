@@ -297,11 +297,13 @@ class CharacterText extends StatelessWidget {
             ),
             new RaisedButton(
               onPressed: () {
-                String content = '';
+                String content = character.join("\n");
                 //TODO записать в файл
+/*
                 for(var i = 0; i < character.length; i++){
                   content = content+'\n'+character[i]+'\n';
                 }
+*/
                CharacteristStorage().writeCaracter(content);
 
               },
@@ -346,6 +348,6 @@ class CharacteristStorage {
   Future<File> writeCaracter(String content) async {
     final file = await _localFile;
     // Write the file
-    return file.writeAsString('$content', mode: FileMode.APPEND);
+    return file.writeAsString('$content');
   }
 }
