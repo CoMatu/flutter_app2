@@ -297,11 +297,13 @@ class CharacterText extends StatelessWidget {
             ),
             new RaisedButton(
               onPressed: () {
+                String content = '';
                 //TODO записать в файл
                 for(var i = 0; i < character.length; i++){
-                  String content = character[i];
-                  CharacterStorage().writeCaracter(content);
+                  content = content+'\n'+character[i]+'\n';
                 }
+               CharacteristStorage().writeCaracter(content);
+
               },
               child: new Text('Сохранить в файл',
               style: new TextStyle(fontSize: 16.0),),
@@ -314,7 +316,7 @@ class CharacterText extends StatelessWidget {
 
 }
 
-class CharacterStorage {
+class CharacteristStorage {
   String filename = 'characterist.txt';
 
   Future<String> get _localPath async {
