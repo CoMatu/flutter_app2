@@ -158,7 +158,6 @@ class _EntryItemState extends State<EntryItem> {
     if(!root.isChecked){
       character.remove(root.title);
     }
-//      print(character);
   }
 }
 
@@ -274,7 +273,24 @@ List<Entry> data = <Entry>[
 
 List<String> character = new List();
 
-class CharacterText extends StatelessWidget {
+class CharacterText extends StatefulWidget {
+
+  @override
+  _CharacterText createState() {
+    return new _CharacterText();
+  }
+
+}
+
+class _CharacterText extends State<CharacterText>{
+
+  final myController = new TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is disposed
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -287,60 +303,59 @@ class CharacterText extends StatelessWidget {
         child: new Column(
           children: <Widget>[
             new Expanded(
-                child: new ListView.builder(
-                    itemCount: character.length,
-                    itemBuilder: (context, index){
-                      return new ListTile(
-                        title: new Text(character[index]),
-                      );
-                    }),
+              child: new ListView.builder(
+                  itemCount: character.length,
+                  itemBuilder: (context, index){
+                    return new ListTile(
+                      title: new Text(character[index]),
+                    );
+                  }),
             ),
             new RaisedButton(
               onPressed: () {
-                //TODO вывести диалог для ввода имени файла
                 String filename = 'Введите имя файла:';
-
                 showDialog(context: context,
-                builder: (BuildContext context){
-                  return new AlertDialog(
-                    title: new Text(filename),
-                    content: new TextField(
-                      decoration: new InputDecoration(
-                        hintText: 'имя файла'
-                      ),
-                    ),
-                    actions: <Widget>[
-                      new FlatButton(
-                          onPressed: (){
-
-                          },
-                          child: new Text('Отмена',
-                          style: new TextStyle(
-                            color: Colors.red
-                          ),)
-                      ),
-                      new FlatButton(
-                          onPressed: (){
-
-                          },
-                          child: new Text('Сохранить'))
-                    ],
-                  );
-                }
+                    builder: (BuildContext context){
+                      return new AlertDialog(
+                        title: new Text(filename),
+                        content: new TextField(
+                          controller: myController,
+                          decoration: new InputDecoration(
+                              hintText: 'имя файла'
+                          ),
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: new Text('Отмена',
+                                style: new TextStyle(
+                                    color: Colors.red
+                                ),)
+                          ),
+                          new FlatButton(
+                              onPressed: (){
+                                String filename1 = myController.text;
+                                print(filename1);
+                              },
+                              child: new Text('Сохранить'))
+                        ],
+                      );
+                    }
                 );
                 String content = character.join("\n");
                 CharacteristicsStorage().writeCharacteristic(content);
               },
               child: new Text('Сохранить в файл',
-              style: new TextStyle(fontSize: 16.0),),
+                style: new TextStyle(fontSize: 16.0),),
             )
           ],
         ),
       ),
     );
   }
+  }
 
-}
+
 
 class CharacteristicsStorage {
   String filename = 'characteristic.txt';
@@ -375,38 +390,3 @@ class CharacteristicsStorage {
     return file.writeAsString('$content');
   }
 }
-
-
-
-/*
-class FileNameDialog extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    var filename = 'Выберите имя файла';
-
-    showDialog(
-        context: context,
-      builder: (BuildContext context) {
-         new SimpleDialog(
-          title: new Text(filename),
-          children: <Widget>[
-            new SimpleDialogOption(
-              onPressed: () {
-
-              },
-            ),
-            new TextField(
-              decoration: new InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'введите имя файла'
-              ),
-            )
-          ],
-        );
-
-      }
-    );
-  }
-
-}*/
