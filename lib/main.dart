@@ -10,6 +10,7 @@ void main() => runApp(new MaterialApp(
     home: new StartScreen())
 );
 
+
 class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class StartScreen extends StatelessWidget {
                 new Padding(
                   padding: const EdgeInsets.all(28.0),
                   child: new RaisedButton(
-                    child: new Text('Вперед!',
+                    child: new Text('Все понятно!',
                     style: new TextStyle(
                       fontSize: 16.0
                     ),),
@@ -282,6 +283,7 @@ class CharacterText extends StatefulWidget {
 
 }
 
+//Выводит на экран текст характеристики и кнопки записи
 class _CharacterText extends State<CharacterText>{
 
   final myController = new TextEditingController();
@@ -336,14 +338,16 @@ class _CharacterText extends State<CharacterText>{
                               onPressed: (){
                                 String filename1 = myController.text;
                                 print(filename1);
+                                filenames.add(filename1);
+                                String content = character.join("\n");
+                                CharacteristicsStorage().writeCharacteristic(content);
+                                Navigator.pop(context);
                               },
                               child: new Text('Сохранить'))
                         ],
                       );
                     }
                 );
-                String content = character.join("\n");
-                CharacteristicsStorage().writeCharacteristic(content);
               },
               child: new Text('Сохранить в файл',
                 style: new TextStyle(fontSize: 16.0),),
@@ -355,10 +359,8 @@ class _CharacterText extends State<CharacterText>{
   }
   }
 
-
-
+  //Запись в файл выбранных значений
 class CharacteristicsStorage {
-  String filename = 'characteristic.txt';
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -367,6 +369,7 @@ class CharacteristicsStorage {
   }
 
   Future<File> get _localFile async {
+    String filename = filenames.last+'.txt';
     final path = await _localPath;
     return new File('$path/$filename');
   }
@@ -385,8 +388,16 @@ class CharacteristicsStorage {
   }
 
   Future<File> writeCharacteristic(String content) async {
+
     final file = await _localFile;
     // Write the file
     return file.writeAsString('$content');
   }
 }
+
+class FileName {
+  final String filename;
+  FileName (this.filename);
+}
+
+final filenames = new List<String>();
