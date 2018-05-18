@@ -15,7 +15,6 @@ void main() => runApp(new MaterialApp(
 class CharacteristList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('Список документов'),
@@ -344,6 +343,7 @@ class _CharacterText extends State<CharacterText>{
                     );
                   }),
             ),
+            //TODO Ограничить количество символов названия файла
             new RaisedButton(
               onPressed: () {
                 String filename = 'Введите имя файла:';
