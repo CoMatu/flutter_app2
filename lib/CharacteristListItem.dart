@@ -13,7 +13,7 @@ class CharacteristListItem extends StatelessWidget{
             size: 44.0,),
             new Column(
                 children: <Widget>[
-                  new Text('Name characteristic',
+                  new Text('Сharacteristic',
                   style: new TextStyle(
                     fontSize: 20.0,
                   ),

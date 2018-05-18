@@ -18,6 +18,7 @@ void main() => runApp(new MaterialApp(
 );
 
 class CharacteristList extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -25,7 +26,7 @@ class CharacteristList extends StatelessWidget {
         title: const Text('Список документов'),
       ),
       body: new ListView.builder(
-            itemCount: 12,
+            itemCount: 8,
             itemBuilder: (context, index){
               return new CharacteristListItem();
             },
@@ -431,6 +432,7 @@ class CharacteristicsStorage {
     // Write the file
     return file.writeAsString('$content');
   }
+
 }
 
 class FileName {
