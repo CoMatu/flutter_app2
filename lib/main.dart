@@ -8,7 +8,12 @@ import 'package:flutter_app2/CharacteristListItem.dart';
 // run app
 void main() => runApp(new MaterialApp(
     title: 'Характеристика',
-    home: new CharacteristList()
+    home: new CharacteristList(),
+  theme: new ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.lightBlue,
+    accentColor: Colors.lightBlueAccent,
+  ),
 )
 );
 
