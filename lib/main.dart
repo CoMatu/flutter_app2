@@ -2,14 +2,37 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_app2/CharacteristListItem.dart';
 
 
 // run app
 void main() => runApp(new MaterialApp(
     title: 'Характеристика',
-    home: new StartScreen())
+    home: new CharacteristList()
+)
 );
 
+class CharacteristList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Scaffold(
+      appBar: new AppBar(
+        title: const Text('Список документов'),
+      ),
+      body: new ListView.builder(
+            itemCount: 12,
+            itemBuilder: (context, index){
+              return new CharacteristListItem();
+            },
+          )
+    );
+  }
+_getFileList(){
+
+}
+
+}
 
 class StartScreen extends StatelessWidget {
   @override
@@ -334,6 +357,8 @@ class _CharacterText extends State<CharacterText>{
                                     color: Colors.red
                                 ),)
                           ),
+
+                          //TODO сделать проверку занятости имени файла
                           new FlatButton(
                               onPressed: (){
                                 String filename1 = myController.text;
@@ -365,13 +390,13 @@ class CharacteristicsStorage {
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
-    return directory.path;
+    return directory.path+'/user_data';
   }
 
   Future<File> get _localFile async {
     String filename = filenames.last+'.txt';
     final path = await _localPath;
-    return new File('$path/$filename');
+    return new File('$path/$filename').create(recursive: true);
   }
 
   Future<String> readCharacteristic() async {
