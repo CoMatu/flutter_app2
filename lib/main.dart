@@ -201,7 +201,7 @@ class Entry {
   bool isChecked;
 }
 
-// The entire multilevel list displayed by this app.
+// TODO Заполнить список деловых качеств
 List<Entry> data = <Entry>[
   new Entry(false,
     ' Компетентность',
@@ -391,7 +391,7 @@ class _CharacterText extends State<CharacterText>{
     );
   }
   }
-
+//TODO добавить функционал получения разрешений на запись и чтение
   //Запись в файл выбранных значений
 class CharacteristicsStorage {
 
