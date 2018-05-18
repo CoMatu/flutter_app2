@@ -25,7 +25,15 @@ class CharacteristList extends StatelessWidget {
             itemBuilder: (context, index){
               return new CharacteristListItem();
             },
-          )
+          ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              new MaterialPageRoute(builder: (context)
+          => new StartScreen()),
+          );},
+        child: new Icon(Icons.add),
+      ),
     );
   }
 _getFileList(){
