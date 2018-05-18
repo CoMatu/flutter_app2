@@ -10,6 +10,7 @@ class CharacteristListItem extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Icon(Icons.account_circle,
+            color: Colors.blue,
             size: 44.0,),
             new Column(
                 children: <Widget>[
@@ -28,13 +29,13 @@ class CharacteristListItem extends StatelessWidget{
                   new Row(
                     children: <Widget>[
                       new FlatButton(onPressed: null,
-                          child: new Text('Читать',
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.teal
-                          ),)),
+                          child: new Text('Изменить',
+                            style: new TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.teal
+                            ),)),
                       new FlatButton(onPressed: null,
-                          child: new Text('Редактировать',
+                          child: new Text('Читать',
                           style: new TextStyle(
                             fontSize: 16.0,
                             color: Colors.teal
