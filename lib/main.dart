@@ -29,7 +29,7 @@ class CharacteristList extends StatelessWidget {
     );
   }
 _getFileList(){
-
+//TODO достать список имен файлов из директории и записать его в массив
 }
 
 }

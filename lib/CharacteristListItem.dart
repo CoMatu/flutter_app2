@@ -40,7 +40,8 @@ class CharacteristListItem extends StatelessWidget{
                             fontSize: 16.0,
                             color: Colors.teal
                           ),)),
-                      new Icon(Icons.share)
+                      new Icon(Icons.share,
+                      color: Colors.teal,)
                     ],
                   )
                 ],
