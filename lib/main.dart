@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app2/FilesInDirectory.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -13,7 +14,8 @@ void main() => runApp(new MaterialApp(
 );
 
 class CharacteristList extends StatelessWidget {
-
+  
+  final List<File> userFiles = new FilesInDirectory().files;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,8 @@ class CharacteristList extends StatelessWidget {
         children: <Widget>[
           new Expanded(
               child: new ListView.builder(
-                itemCount: 11,
+                //TODO неправильное формирование списка файлов
+                itemCount: userFiles.length,
                 itemBuilder: (context, index){
                   return new CharacteristListItem();
                 },
@@ -33,7 +36,7 @@ class CharacteristList extends StatelessWidget {
           ),
           new RaisedButton(
               onPressed: (){
-                filesInDirectory();
+
               },
             child: new Text('DATA'),
           ),
@@ -48,21 +51,6 @@ class CharacteristList extends StatelessWidget {
         child: new Icon(Icons.add),
       ),
     );
-  }
-
-  Future<List<File>> filesInDirectory() async {
-    final directory1 = await getApplicationDocumentsDirectory();
-    String pathUser = directory1.path+'/user_data';
-    Directory dir = new Directory(pathUser);
-    List<File> files = <File>[];
-    await for (FileSystemEntity entity in dir.list(recursive: false, followLinks: false)) {
-      FileSystemEntityType type = await FileSystemEntity.type(entity.path);
-      if (type == FileSystemEntityType.file) {
-        files.add(entity);
-        print(entity.path);
-      }
-    }
-    return files;
   }
 
 }
