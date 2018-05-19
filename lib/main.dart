@@ -9,15 +9,11 @@ import 'package:flutter_app2/CharacteristListItem.dart';
 void main() => runApp(new MaterialApp(
     title: 'Характеристика',
     home: new CharacteristList(),
-  theme: new ThemeData(
-    brightness: Brightness.light,
-    primaryColor: Colors.lightBlue,
-    accentColor: Colors.lightBlueAccent,
-  ),
 )
 );
 
 class CharacteristList extends StatelessWidget {
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +21,24 @@ class CharacteristList extends StatelessWidget {
       appBar: new AppBar(
         title: const Text('Список документов'),
       ),
-      body: new ListView.builder(
-            itemCount: 8,
-            itemBuilder: (context, index){
-              return new CharacteristListItem();
-            },
+      body: new Column(
+        children: <Widget>[
+          new Expanded(
+              child: new ListView.builder(
+                itemCount: 11,
+                itemBuilder: (context, index){
+                  return new CharacteristListItem();
+                },
+              ),
           ),
+          new RaisedButton(
+              onPressed: (){
+                filesInDirectory();
+              },
+            child: new Text('DATA'),
+          ),
+        ],
+      ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
@@ -41,9 +49,21 @@ class CharacteristList extends StatelessWidget {
       ),
     );
   }
-_getFileList(){
-//TODO достать список имен файлов из директории и записать его в массив
-}
+
+  Future<List<File>> filesInDirectory() async {
+    final directory1 = await getApplicationDocumentsDirectory();
+    String pathUser = directory1.path+'/user_data';
+    Directory dir = new Directory(pathUser);
+    List<File> files = <File>[];
+    await for (FileSystemEntity entity in dir.list(recursive: false, followLinks: false)) {
+      FileSystemEntityType type = await FileSystemEntity.type(entity.path);
+      if (type == FileSystemEntityType.file) {
+        files.add(entity);
+        print(entity.path);
+      }
+    }
+    return files;
+  }
 
 }
 
@@ -398,12 +418,12 @@ class _CharacterText extends State<CharacterText>{
   }
   }
 //TODO добавить функционал получения разрешений на запись и чтение
+
   //Запись в файл выбранных значений
 class CharacteristicsStorage {
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
-
     return directory.path+'/user_data';
   }
 
