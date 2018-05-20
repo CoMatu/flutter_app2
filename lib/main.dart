@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_app2/CharacteristListItem.dart';
 
+List<String> filesList = new List<String>();
 
 // run app
 void main() => runApp(new MaterialApp(
@@ -14,8 +15,7 @@ void main() => runApp(new MaterialApp(
 );
 
 class CharacteristList extends StatelessWidget {
-  
-  final List<File> userFiles = new FilesInDirectory().files;
+  var filesList =  FilesInDir().getFilesFromDir();
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,8 @@ class CharacteristList extends StatelessWidget {
         children: <Widget>[
           new Expanded(
               child: new ListView.builder(
-                //TODO неправильное формирование списка файлов
-                itemCount: userFiles.length,
+                //TODO не успевает сформировать список файлов
+                itemCount: filesList.length,
                 itemBuilder: (context, index){
                   return new CharacteristListItem();
                 },
@@ -36,7 +36,8 @@ class CharacteristList extends StatelessWidget {
           ),
           new RaisedButton(
               onPressed: (){
-
+                FilesInDir().getFilesFromDir();
+                print(filesList.length);
               },
             child: new Text('DATA'),
           ),
@@ -412,6 +413,8 @@ class CharacteristicsStorage {
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
+    print(directory.path+'/user_data');
+
     return directory.path+'/user_data';
   }
 
@@ -443,9 +446,20 @@ class CharacteristicsStorage {
 
 }
 
-class FileName {
-  final String filename;
-  FileName (this.filename);
-}
-
 final filenames = new List<String>();
+
+class FilesInDir {
+  String _path= '/data/data/ru.characterist.flutterapp2/app_flutter/user_data';
+  List<String> getFilesFromDir(){
+    // Get the system temp directory.
+    var userFilesDir = new Directory(_path);
+    // List directory contents, recursing into sub-directories,
+    // but not following symbolic links.
+    userFilesDir.list(recursive: true, followLinks: false)
+        .listen((FileSystemEntity entity) {
+      print(entity.path);
+      filesList.add(entity.path);
+    });
+    return filesList;
+  }
+}

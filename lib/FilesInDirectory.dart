@@ -1,25 +1,21 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 
 class FilesInDirectory {
-  List<File> files = <File>[];
+  List<String> filesList = new List<String>();
+  String _path= '/data/data/ru.characterist.flutterapp2/app_flutter/user_data';
 
-  Future<List<File>> filesInDirectory() async {
-    final directory1 = await getApplicationDocumentsDirectory();
-    String pathUser = directory1.path+'/user_data';
-//    new Directory(pathUser).create(recursive: true);
-    Directory dir = new Directory(pathUser);
-    await for (FileSystemEntity entity in dir.list(
-        recursive: false,
-        followLinks: false)) {
-      FileSystemEntityType type = await FileSystemEntity.type(entity.path);
-      if (type == FileSystemEntityType.file) {
-        files.add(entity);
-        print(entity.path);
-      }
-    }
-    return files;
-  }
+getFilesFromDir(){
+  // Get the system temp directory.
+  var userFilesDir = new Directory(_path);
+
+  // List directory contents, recursing into sub-directories,
+  // but not following symbolic links.
+  userFilesDir.list(recursive: true, followLinks: false)
+      .listen((FileSystemEntity entity) {
+    print(entity.path);
+    filesList.add(entity.path);
+  });
+  return filesList;
+}
 
 }
