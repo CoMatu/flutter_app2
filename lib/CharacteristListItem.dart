@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 // TODO добавить корзину для возможности удаления
 
 class CharacteristListItem extends StatelessWidget{
+
+  final String charact_title;
+
+
+  CharacteristListItem(String charact_title)
+  : charact_title = charact_title;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,7 +23,7 @@ class CharacteristListItem extends StatelessWidget{
             size: 44.0,),
             new Column(
                 children: <Widget>[
-                  new Text('Сharacteristic',
+                  new Text(charact_title,
                   style: new TextStyle(
                     fontSize: 20.0,
                   ),

@@ -1,24 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app2/FilesInDirectory.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_app2/CharacteristListItem.dart';
+import 'package:path/path.dart';
 
 List<String> filesList = new List<String>();
 
 // run app
 void main() => runApp(new MaterialApp(
     title: 'Характеристика',
-    home: new CharacteristList(),
+    home: new CharacteristList(filesInDir: new FilesInDir()),
 )
 );
 
-class CharacteristList extends StatelessWidget {
-  var filesList =  FilesInDir().getFilesFromDir();
+class CharacteristList extends StatefulWidget {
+  final FilesInDir filesInDir;
+
+  CharacteristList({Key key, @required this.filesInDir}) : super (key: key);
+
+  @override
+  _CharacteristListState createState() => new _CharacteristListState();
+}
+
+class _CharacteristListState extends State<CharacteristList> {
+  List<String> listFiles;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.filesInDir.getFilesFromDir().then((List<String> filesList) {
+      setState(() {
+        filesList = listFiles;
+      });
+    });
+  }
+
+  Future<List<String>> _ListLenght() async{
+    setState(() {
+      filesList = listFiles;
+    });
+    return widget.filesInDir.getFilesFromDir();
+  }
 
   @override
   Widget build(BuildContext context) {
+    _ListLenght();
+
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('Список документов'),
@@ -28,9 +56,9 @@ class CharacteristList extends StatelessWidget {
           new Expanded(
               child: new ListView.builder(
                 //TODO не успевает сформировать список файлов
-                itemCount: filesList.length,
+                itemCount: 5,
                 itemBuilder: (context, index){
-                  return new CharacteristListItem();
+                  return new CharacteristListItem(filesList[index]);
                 },
               ),
           ),
@@ -54,7 +82,9 @@ class CharacteristList extends StatelessWidget {
     );
   }
 
+
 }
+
 
 class StartScreen extends StatelessWidget {
   @override
@@ -450,7 +480,7 @@ final filenames = new List<String>();
 
 class FilesInDir {
   String _path= '/data/data/ru.characterist.flutterapp2/app_flutter/user_data';
-  List<String> getFilesFromDir(){
+  Future<List<String>> getFilesFromDir() async{
     // Get the system temp directory.
     var userFilesDir = new Directory(_path);
     // List directory contents, recursing into sub-directories,
@@ -458,7 +488,9 @@ class FilesInDir {
     userFilesDir.list(recursive: true, followLinks: false)
         .listen((FileSystemEntity entity) {
       print(entity.path);
-      filesList.add(entity.path);
+      File file = new File(entity.path);
+      String filename = basename(file.path);
+      filesList.add(filename);
     });
     return filesList;
   }
