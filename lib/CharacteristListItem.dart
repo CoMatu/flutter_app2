@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// TODO добавить корзину для возможности удаления
+
 class CharacteristListItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {

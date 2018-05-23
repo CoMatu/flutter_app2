@@ -190,7 +190,7 @@ class _EntryItemState extends State<EntryItem> {
     return new ExpansionTile(
       key: new PageStorageKey<Entry>(root),
       title: new Text(root.title),
-      children: root.children.map(_buildTiles).toList(),
+      children: root.children.map(_buildTiles).toList()
     );
   }
   @override
