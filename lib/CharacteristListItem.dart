@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class CharacteristListItem extends StatelessWidget{
 
-  final String charact_title;
+  final String charactTitle;
 
 
-  CharacteristListItem(String charact_title)
-  : charact_title = charact_title;
+  CharacteristListItem(String charactTitle)
+  : charactTitle = charactTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class CharacteristListItem extends StatelessWidget{
             size: 44.0,),
             new Column(
                 children: <Widget>[
-                  new Text(charact_title,
+                  new Text(charactTitle,
                   style: new TextStyle(
                     fontSize: 20.0,
                   ),
