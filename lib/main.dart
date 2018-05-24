@@ -3,49 +3,39 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_app2/CharacteristListItem.dart';
-import 'package:path/path.dart';
-
-List<String> filesList = new List<String>();
+import 'package:flutter_app2/FilesInDirectory.dart';
 
 // run app
 void main() => runApp(new MaterialApp(
     title: 'Характеристика',
-    home: new CharacteristList(filesInDir: new FilesInDir()),
+    home: new CharacteristList(),
 )
 );
 
 class CharacteristList extends StatefulWidget {
-  final FilesInDir filesInDir;
-
-  CharacteristList({Key key, @required this.filesInDir}) : super (key: key);
 
   @override
   _CharacteristListState createState() => new _CharacteristListState();
 }
 
 class _CharacteristListState extends State<CharacteristList> {
-  List<String> listFiles;
-
+  List<String> filesList = new List<String>();
   @override
+
   void initState() {
+    // TODO: implement initState
     super.initState();
-    widget.filesInDir.getFilesFromDir().then((List<String> filesList) {
-      setState(() {
-        filesList = listFiles;
-      });
-    });
+    filesList = [];
   }
 
-  Future<List<String>> _ListLenght() async{
+  void _getFilesFromDir() {
     setState(() {
-      filesList = listFiles;
+
     });
-    return widget.filesInDir.getFilesFromDir();
   }
 
   @override
   Widget build(BuildContext context) {
-    _ListLenght();
 
     return new Scaffold(
       appBar: new AppBar(
@@ -56,7 +46,7 @@ class _CharacteristListState extends State<CharacteristList> {
           new Expanded(
               child: new ListView.builder(
                 //TODO не успевает сформировать список файлов
-                itemCount: 5,
+                itemCount: filesList.length,
                 itemBuilder: (context, index){
                   return new CharacteristListItem(filesList[index]);
                 },
@@ -64,7 +54,6 @@ class _CharacteristListState extends State<CharacteristList> {
           ),
           new RaisedButton(
               onPressed: (){
-                FilesInDir().getFilesFromDir();
                 print(filesList.length);
               },
             child: new Text('DATA'),
@@ -478,20 +467,3 @@ class CharacteristicsStorage {
 
 final filenames = new List<String>();
 
-class FilesInDir {
-  String _path= '/data/data/ru.characterist.flutterapp2/app_flutter/user_data';
-  Future<List<String>> getFilesFromDir() async{
-    // Get the system temp directory.
-    var userFilesDir = new Directory(_path);
-    // List directory contents, recursing into sub-directories,
-    // but not following symbolic links.
-    userFilesDir.list(recursive: true, followLinks: false)
-        .listen((FileSystemEntity entity) {
-      print(entity.path);
-      File file = new File(entity.path);
-      String filename = basename(file.path);
-      filesList.add(filename);
-    });
-    return filesList;
-  }
-}
