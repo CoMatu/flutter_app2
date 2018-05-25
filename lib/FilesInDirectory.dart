@@ -13,7 +13,7 @@ class FilesInDirectory {
     // but not following symbolic links.
     userFilesDir.list(recursive: true, followLinks: false)
         .listen((FileSystemEntity entity) {
-//      print(entity.path);
+      print(entity.path);
       File file = new File(entity.path);
       String filename = basename(file.path);
       filesList.add(filename);

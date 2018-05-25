@@ -21,8 +21,8 @@ class CharacteristList extends StatefulWidget {
 class _CharacteristListState extends State<CharacteristList> {
   List<String> filesList = new List<String>();
   List<String> filesL = new List<String>();
-  @override
 
+  @override
   void initState() {
     super.initState();
     filesList = [];
@@ -36,10 +36,14 @@ class _CharacteristListState extends State<CharacteristList> {
     return filesList;
   }
 
+//  Future<int> _getFilesCount() async{
+//    filesList = await _getFilesFromDir();
+//    int count = filesList.length;
+//    return count;
+//  }
+
   @override
   Widget build(BuildContext context) {
-
-    _getFilesFromDir();
 
     return new Scaffold(
       appBar: new AppBar(
