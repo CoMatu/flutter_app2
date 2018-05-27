@@ -20,27 +20,6 @@ class CharacteristList extends StatefulWidget {
 
 class _CharacteristListState extends State<CharacteristList> {
   List<String> filesList = new List<String>();
-  List<String> filesL = new List<String>();
-
-  @override
-  void initState() {
-    super.initState();
-    filesList = [];
-  }
-
-  Future<List<String>> _getFilesFromDir() async{
-    filesL = await FilesInDirectory().getFilesFromDir();
-    setState(() {
-      filesList = filesL;
-    });
-    return filesList;
-  }
-
-//  Future<int> _getFilesCount() async{
-//    filesList = await _getFilesFromDir();
-//    int count = filesList.length;
-//    return count;
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,24 +28,33 @@ class _CharacteristListState extends State<CharacteristList> {
       appBar: new AppBar(
         title: const Text('Список документов'),
       ),
-      body: new Column(
-        children: <Widget>[
-          new Expanded(
-              child: new ListView.builder(
-                //TODO не успевает сформировать список файлов
-                itemCount: filesList.length,
-                itemBuilder: (context, index){
-                  return new CharacteristListItem(filesList[index]);
-                },
-              ),
-          ),
-          new RaisedButton(
-              onPressed: (){
-
-              },
-            child: new Text('DATA'),
-          ),
-        ],
+      body: new Center(
+        child: new Column(
+          children: <Widget>[
+            new FutureBuilder(
+                future: _inFutureList(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if(filesList.length != 0){
+                    return customBuild(context);
+                  }
+                  else{
+                    return new CircularProgressIndicator();
+                  }
+                }
+                )
+/*
+            new Expanded(
+                child: new ListView.builder(
+                  //TODO не успевает сформировать список файлов
+                  itemCount: filesList.length,
+                  itemBuilder: (context, index){
+                    return new CharacteristListItem(filesList[index]);
+                  },
+                ),
+            ),
+*/
+          ],
+        ),
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
@@ -79,8 +67,25 @@ class _CharacteristListState extends State<CharacteristList> {
     );
   }
 
-}
+  Widget customBuild(BuildContext context){
+    return new Container(
+      child: new Expanded(
+        child: new ListView.builder(
+          itemCount: filesList.length,
+          itemBuilder: (context, index){
+            return new CharacteristListItem(filesList[index]);
+          },
+        ),
+      )
+    );
+  }
 
+  Future<List<String>>_inFutureList() async{
+    filesList = await FilesInDirectory().getFilesFromDir();
+    return filesList;
+  }
+
+}
 
 class StartScreen extends StatelessWidget {
   @override
