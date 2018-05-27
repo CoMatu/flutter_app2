@@ -19,7 +19,6 @@ class CharacteristList extends StatefulWidget {
 }
 
 class _CharacteristListState extends State<CharacteristList> {
-  List<String> filesList = new List<String>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,25 +33,14 @@ class _CharacteristListState extends State<CharacteristList> {
             new FutureBuilder(
                 future: _inFutureList(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if(filesList.length != 0){
-                    return customBuild(context);
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return new Text('Data is loading...');
                   }
                   else{
-                    return new CircularProgressIndicator();
+                    return customBuild(context, snapshot);
                   }
                 }
                 )
-/*
-            new Expanded(
-                child: new ListView.builder(
-                  //TODO не успевает сформировать список файлов
-                  itemCount: filesList.length,
-                  itemBuilder: (context, index){
-                    return new CharacteristListItem(filesList[index]);
-                  },
-                ),
-            ),
-*/
           ],
         ),
       ),
@@ -67,13 +55,14 @@ class _CharacteristListState extends State<CharacteristList> {
     );
   }
 
-  Widget customBuild(BuildContext context){
+  Widget customBuild(BuildContext context, AsyncSnapshot snapshot){
+    List<String> values = snapshot.data;
     return new Container(
       child: new Expanded(
         child: new ListView.builder(
-          itemCount: filesList.length,
+          itemCount: values.length,
           itemBuilder: (context, index){
-            return new CharacteristListItem(filesList[index]);
+            return new CharacteristListItem(values[index]);
           },
         ),
       )
@@ -81,7 +70,9 @@ class _CharacteristListState extends State<CharacteristList> {
   }
 
   Future<List<String>>_inFutureList() async{
+    var filesList = new List<String>();
     filesList = await FilesInDirectory().getFilesFromDir();
+    await new Future.delayed(new Duration(milliseconds: 500));
     return filesList;
   }
 
