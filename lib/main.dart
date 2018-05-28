@@ -21,6 +21,7 @@ class CharacteristList extends StatelessWidget {
 
     return new Scaffold(
       appBar: new AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Список документов'),
       ),
       body: new Center(
@@ -43,7 +44,9 @@ class CharacteristList extends StatelessWidget {
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-            new MaterialPageRoute(builder: (context)
+            new MaterialPageRoute(
+              maintainState: false,
+                builder: (context)
             => new StartScreen()),
           );
           },
@@ -101,7 +104,9 @@ class StartScreen extends StatelessWidget {
                       onPressed: () {
                     Navigator.push(
                       context,
-                      new MaterialPageRoute(builder: (context) => new CharacteristicSkills()),
+                      new MaterialPageRoute(
+                        maintainState: false,
+                          builder: (context) => new CharacteristicSkills()),
                     );
                   }),
                 )
@@ -151,7 +156,9 @@ class CharacteristicSkills extends StatelessWidget {
                     } else
                     Navigator.push(
                       context,
-                      new MaterialPageRoute(builder: (context) => new CharacterText()),
+                      new MaterialPageRoute(
+                        maintainState: false,
+                          builder: (context) => new CharacterText()),
                     );
                   },
                 child: new Text('Прочитать текст',

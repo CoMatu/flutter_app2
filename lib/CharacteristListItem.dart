@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app2/main.dart';
 
-// TODO добавить корзину для возможности удаления
-
 class CharacteristListItem extends StatelessWidget{
 
   final String charactTitle;
@@ -81,16 +79,11 @@ class CharacteristListItem extends StatelessWidget{
                              onPressed: (){
                                deleteCharacteristic(charactPath);
                                Navigator.push(context,
-                                 new MaterialPageRoute(builder: (context)
+                                 new MaterialPageRoute(
+                                     builder: (context)
                                  => new CharacteristList()),
-                               );
-
-                             }
+                               );}
                              )
-/*
-                        new Icon(Icons.share,
-                          color: Colors.teal,),
-*/
                       ],
                     )
                   ],
