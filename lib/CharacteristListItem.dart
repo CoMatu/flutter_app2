@@ -16,7 +16,7 @@ class CharacteristListItem extends StatelessWidget{
       padding: const EdgeInsets.all(2.0),
       child: new Card(
         child: new Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Expanded(
               flex: 1,
@@ -66,12 +66,18 @@ class CharacteristListItem extends StatelessWidget{
                             ),
                             )
                         ),
+                         new IconButton(
+                             icon: new Icon(
+                                 Icons.delete,
+                               color: Colors.red,
+                             ),
+                             onPressed: (){
+
+                             })
 /*
                         new Icon(Icons.share,
                           color: Colors.teal,),
 */
-                        new Icon(Icons.delete,
-                          color: Colors.red,)
                       ],
                     )
                   ],
