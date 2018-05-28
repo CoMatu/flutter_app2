@@ -45,7 +45,8 @@ class CharacteristList extends StatelessWidget {
           Navigator.push(context,
             new MaterialPageRoute(builder: (context)
             => new StartScreen()),
-          );},
+          );
+          },
         child: new Icon(Icons.add),
       ),
     );
