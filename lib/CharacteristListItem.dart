@@ -56,7 +56,9 @@ class CharacteristListItem extends StatelessWidget{
                           ),
                         ),
                         new FlatButton(
-                            onPressed: null,
+                            onPressed: (){
+
+                            },
                             child: new Text('Поделиться',
                             style: new TextStyle(
                               fontSize: 16.0,

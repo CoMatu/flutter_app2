@@ -4,6 +4,10 @@ import 'package:flutter_app2/CharacteristListItem.dart';
 import 'package:flutter_app2/FilesInDirectory.dart';
 import 'package:flutter_app2/FileManager.dart';
 
+final filenames = new List<String>();
+
+List<String> character = new List();
+
 // run app
 void main() => runApp(new MaterialApp(
     title: 'Характеристика',
@@ -11,14 +15,7 @@ void main() => runApp(new MaterialApp(
 )
 );
 
-class CharacteristList extends StatefulWidget {
-
-  @override
-  _CharacteristListState createState() => new _CharacteristListState();
-}
-
-class _CharacteristListState extends State<CharacteristList> {
-
+class CharacteristList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
@@ -39,15 +36,15 @@ class _CharacteristListState extends State<CharacteristList> {
                     return customBuild(context, snapshot);
                   }
                 }
-                )
+            )
           ],
         ),
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-              new MaterialPageRoute(builder: (context)
-          => new StartScreen()),
+            new MaterialPageRoute(builder: (context)
+            => new StartScreen()),
           );},
         child: new Icon(Icons.add),
       ),
@@ -57,14 +54,14 @@ class _CharacteristListState extends State<CharacteristList> {
   Widget customBuild(BuildContext context, AsyncSnapshot snapshot){
     List<String> values = snapshot.data;
     return new Container(
-      child: new Expanded(
-        child: new ListView.builder(
-          itemCount: values.length,
-          itemBuilder: (context, index){
-            return new CharacteristListItem(values[index]);
-          },
-        ),
-      )
+        child: new Expanded(
+          child: new ListView.builder(
+            itemCount: values.length,
+            itemBuilder: (context, index){
+              return new CharacteristListItem(values[index]);
+            },
+          ),
+        )
     );
   }
 
@@ -74,7 +71,6 @@ class _CharacteristListState extends State<CharacteristList> {
     await new Future.delayed(new Duration(milliseconds: 500));
     return filesList;
   }
-
 }
 
 class StartScreen extends StatelessWidget {
@@ -338,8 +334,6 @@ List<Entry> data = <Entry>[
   ),
 ];
 
-List<String> character = new List();
-
 class CharacterText extends StatefulWidget {
 
   @override
@@ -430,5 +424,4 @@ class _CharacterText extends State<CharacterText>{
   }
 //TODO добавить функционал получения разрешений на запись и чтение
 
-final filenames = new List<String>();
 
