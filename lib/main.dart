@@ -43,6 +43,7 @@ class CharacteristList extends StatelessWidget {
       ),
       bottomNavigationBar: new CustomBottomAppBar(),
       floatingActionButton: new FloatingActionButton(
+        backgroundColor: Colors.orangeAccent,
         onPressed: () {
           Navigator.push(context,
             new MaterialPageRoute(
@@ -385,54 +386,95 @@ class _CharacterText extends State<CharacterText>{
                   }),
             ),
             //TODO Ограничить количество символов названия файла
+/*
             new RaisedButton(
               onPressed: () {
-                String filename = 'Введите имя файла:';
-                showDialog(context: context,
-                    builder: (BuildContext context){
-                      return new AlertDialog(
-                        title: new Text(filename),
-                        content: new TextField(
-                          controller: myController,
-                          decoration: new InputDecoration(
-                              hintText: 'имя файла'
-                          ),
-                        ),
-                        actions: <Widget>[
-                          new FlatButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: new Text('Отмена',
-                                style: new TextStyle(
-                                    color: Colors.red
-                                ),)
-                          ),
-
-                          //TODO сделать проверку занятости имени файла
-                          new FlatButton(
-                              onPressed: (){
-                                String filename1 = myController.text;
-                                print(filename1);
-                                filenames.add(filename1);
-                                String content = character.join("\n");
-                                FileManager(filenames)
-                                    .writeCharacteristic(content);
-                                Navigator.pop(context);
-                              },
-                              child: new Text('Сохранить'))
-                        ],
-                      );
-                    }
-                );
               },
               child: new Text('Сохранить в файл',
                 style: new TextStyle(fontSize: 16.0),),
             )
+*/
           ],
         ),
       ),
+      bottomNavigationBar: CustomBABPage(),
+      floatingActionButton: new FloatingActionButton(
+          onPressed: (){
+            String filename = 'Введите имя файла:';
+            showDialog(context: context,
+                builder: (BuildContext context){
+                  return new AlertDialog(
+                    title: new Text(filename),
+                    content: new TextField(
+                      controller: myController,
+                      decoration: new InputDecoration(
+                          hintText: 'имя файла'
+                      ),
+                    ),
+                    actions: <Widget>[
+                      new FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: new Text('Отмена',
+                            style: new TextStyle(
+                                color: Colors.red
+                            ),)
+                      ),
+
+                      //TODO сделать проверку занятости имени файла
+                      new FlatButton(
+                          onPressed: (){
+                            String filename1 = myController.text;
+                            print(filename1);
+                            filenames.add(filename1);
+                            String content = character.join("\n");
+                            FileManager(filenames)
+                                .writeCharacteristic(content);
+                            Navigator.pop(context);
+                          },
+                          child: new Text('Сохранить'))
+                    ],
+                  );
+                }
+            );
+          },
+        child: new Icon(Icons.save),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
     );
   }
   }
+
+class CustomBABPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> rowContent = <Widget> [
+      new IconButton(
+          icon: const Icon(Icons.home),
+          color: Colors.white,
+          onPressed: (){
+            Navigator.push(context,
+            new MaterialPageRoute(
+                builder: (context) => new CharacteristList()
+            ));
+          }),
+/*
+      new IconButton(
+          icon: const Icon(Icons.save),
+          color: Colors.white,
+          onPressed: (){
+          })
+*/
+    ];
+    // TODO: implement build
+    return new BottomAppBar(
+      hasNotch: true,
+      color: Colors.blue,
+      child: new Row(children: rowContent),
+    );
+  }
+
+}
+
 //TODO добавить функционал получения разрешений на запись и чтение
 
 class CustomBottomAppBar extends StatelessWidget{

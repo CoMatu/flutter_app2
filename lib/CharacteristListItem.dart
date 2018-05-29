@@ -44,7 +44,7 @@ class CharacteristListItem extends StatelessWidget {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                  //TODO сделать возврат даты создания/изменения файла
+                  //TODO после удаления файла получаем здесь исключение
                   new FutureBuilder(
                       future: getData(charactPath),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -87,7 +87,6 @@ class CharacteristListItem extends StatelessWidget {
                             color: Colors.teal,
                           ),
                           onPressed: () async {
-                            //TODO send email
                             _launchURL();
                           }
                       ),

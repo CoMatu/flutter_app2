@@ -69,9 +69,10 @@ class CustomBABPage extends StatelessWidget{
   Widget build(BuildContext context) {
     final List<Widget> rowContent = <Widget> [
       new IconButton(
-          icon: const Icon(Icons.menu),
+          icon: const Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: (){
+            Navigator.pop(context);
           }),
 /*
       new IconButton(
