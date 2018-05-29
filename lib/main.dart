@@ -41,6 +41,7 @@ class CharacteristList extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: new CustomBottomAppBar(),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
@@ -52,6 +53,8 @@ class CharacteristList extends StatelessWidget {
           },
         child: new Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
+
     );
   }
 
@@ -432,4 +435,29 @@ class _CharacterText extends State<CharacterText>{
   }
 //TODO добавить функционал получения разрешений на запись и чтение
 
+class CustomBottomAppBar extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> rowContent = <Widget> [
+      new IconButton(
+          icon: const Icon(Icons.menu),
+          color: Colors.white,
+          onPressed: (){
+          }),
+/*
+      new IconButton(
+          icon: const Icon(Icons.save),
+          color: Colors.white,
+          onPressed: (){
+          })
+*/
+    ];
+    // TODO: implement build
+    return new BottomAppBar(
+      hasNotch: true,
+      color: Colors.blue,
+      child: new Row(children: rowContent),
+    );
+  }
 
+}
