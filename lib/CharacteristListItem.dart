@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app2/CharacteristicPage.dart';
 import 'package:flutter_app2/main.dart';
+import 'package:intl/intl.dart';
 
 class CharacteristListItem extends StatelessWidget{
   var characteristic = new List<String>();
@@ -42,11 +43,20 @@ class CharacteristListItem extends StatelessWidget{
                       ),
                       textAlign: TextAlign.start,
                     ),
-                    new Text('data.month.year',
-                      style: new TextStyle(
-                          color: Colors.black54
-                      ),
-                      textAlign: TextAlign.start,
+                    //TODO сделать возврат даты создания/изменения файла
+                    new FutureBuilder(
+                        future: getData(charactPath),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            return new Text('Data is loading...');
+                          }
+                          else{
+                            var format = new DateFormat.yMd();
+                            DateTime fileDate = snapshot.data;
+                            var dateString = format.format(fileDate);
+                            return new Text(dateString);
+                          }
+                        }
                     ),
                     new Row(
                       mainAxisSize: MainAxisSize.max,
@@ -105,6 +115,11 @@ class CharacteristListItem extends StatelessWidget{
   Future<File> deleteCharacteristic(String filepath) async{
     final file = new File(filepath);
     return file.delete(recursive: true);
+  }
+
+  Future<DateTime> getData(String filepath) async{
+    final file = new File(filepath);
+    return file.lastModified();
   }
 
   }
