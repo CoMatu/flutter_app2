@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app2/CharacteristicPage.dart';
 import 'package:flutter_app2/main.dart';
 
 class CharacteristListItem extends StatelessWidget{
+  var characteristic = new List<String>();
 
   final String charactTitle;
 
@@ -52,6 +54,12 @@ class CharacteristListItem extends StatelessWidget{
                       children: <Widget>[
                         new FlatButton(onPressed: (){
                           //TODO сделать переход на экран с техтом характеристики
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                maintainState: false,
+                                builder: (context) => new CharacteristicPage(charactPath)),
+                          );
                         },
                           child: new Text('Читать',
                             style: new TextStyle(
@@ -62,7 +70,6 @@ class CharacteristListItem extends StatelessWidget{
                         ),
                         new FlatButton(
                             onPressed: (){
-
                             },
                             child: new Text('Поделиться',
                             style: new TextStyle(
@@ -100,4 +107,4 @@ class CharacteristListItem extends StatelessWidget{
     return file.delete(recursive: true);
   }
 
-}
+  }

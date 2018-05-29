@@ -81,6 +81,7 @@ class CharacteristList extends StatelessWidget {
 }
 
 class StartScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
       return new Scaffold(
@@ -353,7 +354,6 @@ class CharacterText extends StatefulWidget {
   }
 
 }
-
 //Выводит на экран текст характеристики и кнопки записи
 class _CharacterText extends State<CharacterText>{
 
@@ -461,3 +461,23 @@ class CustomBottomAppBar extends StatelessWidget{
   }
 
 }
+
+class BottomAppBarSavePage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> rowContent = <Widget> [
+      new IconButton(
+          icon: const Icon(Icons.home),
+          color: Colors.white,
+          onPressed: (){
+          }),
+    ];
+    // TODO: implement build
+    return new BottomAppBar(
+      color: Colors.blue,
+      child: new Row(children: rowContent),
+    );
+  }
+
+}
+
