@@ -53,6 +53,7 @@ class CharacteristListItem extends StatelessWidget {
                           return new Text('Data is loading...');
                         }
                         else {
+                          //TODO добавить часы и минуты создания
                           var format = new DateFormat.yMd();
                           DateTime fileDate = snapshot.data;
                           var dateString = format.format(fileDate);

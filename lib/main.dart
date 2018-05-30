@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_app2/CharacteristListItem.dart';
 import 'package:flutter_app2/FilesInDirectory.dart';
 import 'package:flutter_app2/FileManager.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final filenames = new List<String>();
 
@@ -42,8 +43,11 @@ class CharacteristList extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: new CustomBottomAppBar(),
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: new FloatingActionButton.extended(
+        elevation: 4.0,
         backgroundColor: Colors.orangeAccent,
+        icon: const Icon(Icons.add),
+        label: const Text('Добавить'),
         onPressed: () {
           Navigator.push(context,
             new MaterialPageRoute(
@@ -52,9 +56,8 @@ class CharacteristList extends StatelessWidget {
             => new StartScreen()),
           );
           },
-        child: new Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked ,
 
     );
   }
@@ -82,7 +85,7 @@ class CharacteristList extends StatelessWidget {
 }
 
 class StartScreen extends StatelessWidget {
-
+// TODO сделать чекбокс "не показывать больше"
   @override
   Widget build(BuildContext context) {
       return new Scaffold(
@@ -457,13 +460,14 @@ class CustomBABPage extends StatelessWidget{
                 builder: (context) => new CharacteristList()
             ));
           }),
-/*
+
       new IconButton(
-          icon: const Icon(Icons.save),
+          icon: const Icon(Icons.mail),
           color: Colors.white,
           onPressed: (){
+            _launchURL();
           })
-*/
+
     ];
     // TODO: implement build
     return new BottomAppBar(
@@ -474,6 +478,20 @@ class CustomBABPage extends StatelessWidget{
   }
 
 }
+
+// для отправки письма с текстом характеристики
+_launchURL() async {
+  String body = character.join("\n");
+  var url = 'mailto:?'
+      'subject=Текст характеристики - черновик'
+      +'&body='+body;
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
 
 //TODO добавить функционал получения разрешений на запись и чтение
 
@@ -496,7 +514,7 @@ class CustomBottomAppBar extends StatelessWidget{
     ];
     // TODO: implement build
     return new BottomAppBar(
-      hasNotch: true,
+      hasNotch: false,
       color: Colors.blue,
       child: new Row(children: rowContent),
     );
@@ -516,8 +534,10 @@ class BottomAppBarSavePage extends StatelessWidget{
     ];
     // TODO: implement build
     return new BottomAppBar(
+      hasNotch: false,
       color: Colors.blue,
       child: new Row(children: rowContent),
+
     );
   }
 
