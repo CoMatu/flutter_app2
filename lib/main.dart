@@ -99,7 +99,7 @@ class StartScreen extends StatelessWidget {
                 new Text('На следующей странице в раскрывающемся списке выберите одну или несколько компетенций для оценки. Для выбора нажмите "галочку", для отмены - повторное нажатие.',
                 style: new TextStyle(
                   color: Colors.black87,
-                  fontSize: 22.0
+                  fontSize: 18.0
                 ),),
                 new Padding(
                   padding: const EdgeInsets.all(28.0),

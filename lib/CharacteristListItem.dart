@@ -6,6 +6,8 @@ import 'package:flutter_app2/CharacteristicPage.dart';
 import 'package:flutter_app2/main.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 var characteristic = new List<String>();
 
 class CharacteristListItem extends StatelessWidget {
@@ -52,11 +54,17 @@ class CharacteristListItem extends StatelessWidget {
                           return new Text('Data is loading...');
                         }
                         else {
-                          //TODO добавить часы и минуты создания
-                          var format = new DateFormat.yMd();
+                          initializeDateFormatting();
+                          var dateFormat = new DateFormat.yMd('ru');
+                          var timeFormat = new DateFormat.Hm('ru');
                           DateTime fileDate = snapshot.data;
-                          var dateString = format.format(fileDate);
-                          return new Text(dateString);
+                          var dateString = dateFormat.format(fileDate);
+                          var timeString = timeFormat.format(fileDate);
+                          return new Text(
+                              dateString+'   '+timeString,
+                          style: new TextStyle(
+                            color: Colors.black26,
+                            fontSize: 12.0                          ),);
                         }
                       }
                   ),
