@@ -13,14 +13,16 @@ var characteristic = new List<String>();
 class CharacteristListItem extends StatelessWidget {
   final String charactTitle;
 
-  CharacteristListItem(String charactTitle)
-      : charactTitle = charactTitle;
+  CharacteristListItem(String charactTitle) : charactTitle = charactTitle;
 
   @override
   Widget build(BuildContext context) {
     var charactPath =
-        '/data/data/ru.characterist.flutterapp2/app_flutter/user_data/'
-            + charactTitle;
+        '/data/data/ru.characterist.flutterapp2/app_flutter/user_data/' +
+            charactTitle;
+    initializeDateFormatting();
+    var dateFormat = new DateFormat.yMd('ru');
+    var timeFormat = new DateFormat.Hm('ru');
 
     return Padding(
       padding: const EdgeInsets.all(2.0),
@@ -33,13 +35,15 @@ class CharacteristListItem extends StatelessWidget {
               child: new Icon(
                 Icons.account_circle,
                 color: Colors.blue,
-                size: 44.0,),
+                size: 44.0,
+              ),
             ),
             new Expanded(
               flex: 5,
               child: new Column(
                 children: <Widget>[
-                  new Text(charactTitle,
+                  new Text(
+                    charactTitle,
                     style: new TextStyle(
                       fontSize: 20.0,
                     ),
@@ -52,40 +56,35 @@ class CharacteristListItem extends StatelessWidget {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return new Text('Data is loading...');
-                        }
-                        else {
-                          initializeDateFormatting();
-                          var dateFormat = new DateFormat.yMd('ru');
-                          var timeFormat = new DateFormat.Hm('ru');
+                        } else {
                           DateTime fileDate = snapshot.data;
                           var dateString = dateFormat.format(fileDate);
                           var timeString = timeFormat.format(fileDate);
                           return new Text(
-                              dateString+'   '+timeString,
-                          style: new TextStyle(
-                            color: Colors.black26,
-                            fontSize: 12.0                          ),);
+                            dateString + '   ' + timeString,
+                            style: new TextStyle(
+                                color: Colors.black26, fontSize: 12.0),
+                          );
                         }
-                      }
-                  ),
+                      }),
                   new Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      new FlatButton(onPressed: () {
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              maintainState: false,
-                              builder: (context) =>
-                              new CharacteristicPage(charactPath)),
-                        );
-                      },
-                        child: new Text('Читать',
-                          style: new TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.teal
-                          ),
+                      new FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                maintainState: false,
+                                builder: (context) =>
+                                    new CharacteristicPage(charactPath)),
+                          );
+                        },
+                        child: new Text(
+                          'Читать',
+                          style:
+                              new TextStyle(fontSize: 16.0, color: Colors.teal),
                         ),
                       ),
                       new IconButton(
@@ -95,8 +94,7 @@ class CharacteristListItem extends StatelessWidget {
                           ),
                           onPressed: () async {
                             _launchURL();
-                          }
-                      ),
+                          }),
                       new IconButton(
                           icon: new Icon(
                             Icons.delete,
@@ -104,17 +102,16 @@ class CharacteristListItem extends StatelessWidget {
                           ),
                           onPressed: () {
                             deleteCharacteristic(charactPath);
-                            Navigator.push(context,
+                            Navigator.push(
+                              context,
                               new MaterialPageRoute(
                                   builder: (context) => new CharacteristList()),
                             );
-                          }
-                      )
+                          })
                     ],
                   )
                 ],
               ),
-
             )
           ],
         ),
@@ -134,15 +131,17 @@ class CharacteristListItem extends StatelessWidget {
 
   _launchURL() async {
     var charactPath2 =
-        '/data/data/ru.characterist.flutterapp2/app_flutter/user_data/'
-            + charactTitle;
+        '/data/data/ru.characterist.flutterapp2/app_flutter/user_data/' +
+            charactTitle;
 
     List<String> content = await readCharacteristic(charactPath2);
     String body = content.join("\n");
 
     var url = 'mailto:?'
-        'subject=Текст характеристики '+charactTitle
-    +'&body='+body;
+        'subject=Текст характеристики ' +
+        charactTitle +
+        '&body=' +
+        body;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -150,11 +149,9 @@ class CharacteristListItem extends StatelessWidget {
     }
   }
 
-  Future<List<String>> readCharacteristic(String filepath) async{
+  Future<List<String>> readCharacteristic(String filepath) async {
     final file = new File(filepath);
     characteristic = await file.readAsLines();
     return characteristic;
   }
-
-
 }
