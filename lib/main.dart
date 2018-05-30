@@ -43,11 +43,9 @@ class CharacteristList extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: new CustomBottomAppBar(),
-      floatingActionButton: new FloatingActionButton.extended(
+      floatingActionButton: new FloatingActionButton(
         elevation: 4.0,
         backgroundColor: Colors.orangeAccent,
-        icon: const Icon(Icons.add),
-        label: const Text('Добавить'),
         onPressed: () {
           Navigator.push(context,
             new MaterialPageRoute(
@@ -56,8 +54,9 @@ class CharacteristList extends StatelessWidget {
             => new StartScreen()),
           );
           },
+        child: new Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked ,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
 
     );
   }
@@ -514,7 +513,7 @@ class CustomBottomAppBar extends StatelessWidget{
     ];
     // TODO: implement build
     return new BottomAppBar(
-      hasNotch: false,
+      hasNotch: true,
       color: Colors.blue,
       child: new Row(children: rowContent),
     );
