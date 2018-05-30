@@ -19,7 +19,6 @@ void main() => runApp(new MaterialApp(
 class CharacteristList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
       appBar: new AppBar(
         automaticallyImplyLeading: false,
@@ -87,7 +86,7 @@ class StartScreen extends StatelessWidget {
 // TODO сделать чекбокс "не показывать больше"
   @override
   Widget build(BuildContext context) {
-      return new Scaffold(
+    return new Scaffold(
         appBar: new AppBar(
           title: const Text('Характеристика'),
         ),
@@ -96,6 +95,7 @@ class StartScreen extends StatelessWidget {
           child: new Center(
             child: new Column(
               children: <Widget>[
+                new Image.asset('assets/letter.png'),
                 new Text('На следующей странице в раскрывающемся списке выберите одну или несколько компетенций для оценки. Для выбора нажмите "галочку", для отмены - повторное нажатие.',
                 style: new TextStyle(
                   color: Colors.black87,
