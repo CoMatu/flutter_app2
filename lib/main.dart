@@ -261,7 +261,6 @@ class Entry {
   bool isChecked;
 }
 
-// TODO Заполнить список деловых качеств
 List<Entry> data = <Entry>[
   new Entry(false,
     '1. Компетентность',
