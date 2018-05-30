@@ -65,7 +65,6 @@ class CharacteristListItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       new FlatButton(onPressed: () {
-                        //TODO сделать переход на экран с техтом характеристики
                         Navigator.push(
                           context,
                           new MaterialPageRoute(

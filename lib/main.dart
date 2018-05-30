@@ -926,7 +926,6 @@ class CustomBABPage extends StatelessWidget{
           })
 
     ];
-    // TODO: implement build
     return new BottomAppBar(
       hasNotch: true,
       color: Colors.blue,
@@ -961,22 +960,13 @@ class CustomBottomAppBar extends StatelessWidget{
           color: Colors.white,
           onPressed: (){
           }),
-/*
-      new IconButton(
-          icon: const Icon(Icons.save),
-          color: Colors.white,
-          onPressed: (){
-          })
-*/
     ];
-    // TODO: implement build
     return new BottomAppBar(
       hasNotch: true,
       color: Colors.blue,
       child: new Row(children: rowContent),
     );
   }
-
 }
 
 class BottomAppBarSavePage extends StatelessWidget{
@@ -989,14 +979,11 @@ class BottomAppBarSavePage extends StatelessWidget{
           onPressed: (){
           }),
     ];
-    // TODO: implement build
     return new BottomAppBar(
       hasNotch: false,
       color: Colors.blue,
       child: new Row(children: rowContent),
-
     );
   }
-
 }
 

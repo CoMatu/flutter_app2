@@ -81,7 +81,6 @@ class CustomBABPage extends StatelessWidget{
           })
 */
     ];
-    // TODO: implement build
     return new BottomAppBar(
       hasNotch: true,
       color: Colors.blue,
