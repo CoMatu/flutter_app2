@@ -6,10 +6,9 @@ import 'package:flutter_app2/CharacteristicPage.dart';
 import 'package:flutter_app2/main.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+var characteristic = new List<String>();
 
 class CharacteristListItem extends StatelessWidget {
-  var characteristic = new List<String>();
-
   final String charactTitle;
 
   CharacteristListItem(String charactTitle)

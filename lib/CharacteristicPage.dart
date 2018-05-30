@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 
 class CharacteristicPage extends StatelessWidget{
   String charactPath;
-  var characteristic = new List<String>();
 
   CharacteristicPage(String charactPath){
     this.charactPath = charactPath;
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
         automaticallyImplyLeading: false,
@@ -58,6 +56,7 @@ class CharacteristicPage extends StatelessWidget{
   }
 
   Future<List<String>> readCharacteristic(String filepath) async{
+    var characteristic = new List<String>();
     final file = new File(filepath);
     characteristic = await file.readAsLines();
     return characteristic;

@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart';
 
 class FileManager {
   List<String> filenames;
-
   FileManager(List<String> filenames){
     this.filenames = filenames;
   }
