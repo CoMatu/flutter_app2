@@ -102,11 +102,13 @@ class CharacteristListItem extends StatelessWidget {
                           ),
                           onPressed: () {
                             deleteCharacteristic(charactPath);
+/*
                             Navigator.push(
                               context,
                               new MaterialPageRoute(
                                   builder: (context) => new CharacteristList()),
                             );
+*/
                           })
                     ],
                   )

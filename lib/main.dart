@@ -6,17 +6,128 @@ import 'package:flutter_app2/FileManager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final filenames = new List<String>();
-
 List<String> character = new List();
 
 // run app
 void main() => runApp(new MaterialApp(
     title: 'Характеристика',
-    home: new CharacteristList(),
+    home: new StartPage(),
 )
 );
 
-class CharacteristList extends StatelessWidget {
+class StartPage extends StatelessWidget {
+  var imagename = 'assets/letter.png';
+  var list_char = new List<String>();
+
+  @override
+  Widget build(BuildContext context) {
+
+      return new FutureBuilder(
+        future: _inFutureList(),
+          builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot){
+          return new Scaffold(
+            body:
+            new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Text('ХАРАКТЕРИСТИКА 1.0',
+                  style: new TextStyle(
+                      fontSize: 20.0
+                  ),),
+                new Image.asset(imagename),
+/*
+          new SizedBox(
+            width: 200.0,
+            child: new LinearProgressIndicator(),
+          ),
+*/
+                new SizedBox(
+                  height: 40.0,
+                  width: 200.0,
+                  child: new RaisedButton(
+                      elevation: 4.0,
+                      color: Colors.orange,
+                      highlightColor: Colors.orangeAccent,
+                      child: new Text('К списку документов',
+                        style: new TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white
+                        ),),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              maintainState: false,
+                              builder: (context) => new CharacteristList(snapshot.data)),
+                        );
+                      }),
+                ),
+                new Divider(),
+                new SizedBox(
+                  height: 40.0,
+                  width: 200.0,
+                  child: new RaisedButton(
+                      elevation: 4.0,
+                      color: Colors.orange,
+                      highlightColor: Colors.orangeAccent,
+                      child: new Text('Новый документ',
+                        style: new TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white
+                        ),),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              maintainState: false,
+                              builder: (context) => new CharacteristicSkills()),
+                        );
+                      }),
+                )
+              ],
+            )
+
+          );
+          },
+      );
+  }
+  Future<List<String>>_inFutureList() async{
+    var filesList = new List<String>();
+    filesList = await FilesInDirectory().getFilesFromDir();
+    await new Future.delayed(new Duration(milliseconds: 1000));
+    return filesList;
+  }
+}
+
+class CharacteristList extends StatefulWidget {
+  List<String> list_character;
+  CharacteristList(List<String> list_character){
+    this.list_character = list_character;
+  }
+
+  @override
+  CharacteristListState createState() {
+    return new CharacteristListState();
+  }
+
+  Widget customBuild(BuildContext context, List<String> snapshot){
+    List<String> values = snapshot;
+    return new Container(
+        child: new Expanded(
+          child: new ListView.builder(
+            itemCount: values.length,
+            itemBuilder: (context, index){
+              return new CharacteristListItem(values[index]);
+            },
+          ),
+        )
+    );
+  }
+
+}
+
+class CharacteristListState extends State<CharacteristList> {
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -27,17 +138,7 @@ class CharacteristList extends StatelessWidget {
       body: new Center(
         child: new Column(
           children: <Widget>[
-            new FutureBuilder(
-                future: _inFutureList(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if(snapshot.connectionState == ConnectionState.waiting){
-                    return new Text('Data is loading...');
-                  }
-                  else{
-                    return customBuild(context, snapshot);
-                  }
-                }
-            )
+            widget.customBuild(context, widget.list_character)
           ],
         ),
       ),
@@ -56,29 +157,7 @@ class CharacteristList extends StatelessWidget {
         child: new Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
-
     );
-  }
-
-  Widget customBuild(BuildContext context, AsyncSnapshot snapshot){
-    List<String> values = snapshot.data;
-    return new Container(
-        child: new Expanded(
-          child: new ListView.builder(
-            itemCount: values.length,
-            itemBuilder: (context, index){
-              return new CharacteristListItem(values[index]);
-            },
-          ),
-        )
-    );
-  }
-
-  Future<List<String>>_inFutureList() async{
-    var filesList = new List<String>();
-    filesList = await FilesInDirectory().getFilesFromDir();
-    await new Future.delayed(new Duration(milliseconds: 500));
-    return filesList;
   }
 }
 
@@ -250,6 +329,187 @@ class _EntryItemState extends State<EntryItem> {
     if(!root.isChecked){
       character.remove(root.title);
     }
+  }
+}
+
+
+class CharacterText extends StatefulWidget {
+
+  @override
+  _CharacterText createState() {
+    return new _CharacterText();
+  }
+
+}
+//Выводит на экран текст характеристики и кнопки записи
+class _CharacterText extends State<CharacterText>{
+
+  final myController = new TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is disposed
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: const Text('Характеристика'),
+      ),
+      body: new Padding(
+        padding: const EdgeInsets.all(14.0),
+        child: new Column(
+          children: <Widget>[
+            new Expanded(
+              child: new ListView.builder(
+                  itemCount: character.length,
+                  itemBuilder: (context, index){
+                    return new ListTile(
+                      title: new Text(character[index]),
+                    );
+                  }),
+            ),
+            //TODO Ограничить количество символов названия файла
+/*
+            new RaisedButton(
+              onPressed: () {
+              },
+              child: new Text('Сохранить в файл',
+                style: new TextStyle(fontSize: 16.0),),
+            )
+*/
+          ],
+        ),
+      ),
+      bottomNavigationBar: CustomBABPage(),
+      floatingActionButton: new FloatingActionButton(
+          onPressed: (){
+            String filename = 'Введите имя файла:';
+            showDialog(context: context,
+                builder: (BuildContext context){
+                  return new AlertDialog(
+                    title: new Text(filename),
+                    content: new TextField(
+                      controller: myController,
+                      decoration: new InputDecoration(
+                          hintText: 'имя файла'
+                      ),
+                    ),
+                    actions: <Widget>[
+                      new FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: new Text('Отмена',
+                            style: new TextStyle(
+                                color: Colors.red
+                            ),)
+                      ),
+
+                      //TODO сделать проверку занятости имени файла
+                      new FlatButton(
+                          onPressed: (){
+                            String filename1 = myController.text;
+                            print(filename1);
+                            filenames.add(filename1);
+                            String content = character.join("\n");
+                            FileManager(filenames)
+                                .writeCharacteristic(content);
+                            Navigator.pop(context);
+                          },
+                          child: new Text('Сохранить'))
+                    ],
+                  );
+                }
+            );
+          },
+        child: new Icon(Icons.save),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
+    );
+  }
+  }
+
+class CustomBABPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> rowContent = <Widget> [
+      new IconButton(
+          icon: const Icon(Icons.home),
+          color: Colors.white,
+          onPressed: (){
+            Navigator.push(context,
+            new MaterialPageRoute(
+                builder: (context) => new StartPage()
+            ));
+          }),
+
+      new IconButton(
+          icon: const Icon(Icons.mail),
+          color: Colors.white,
+          onPressed: (){
+            _launchURL();
+          })
+
+    ];
+    return new BottomAppBar(
+      hasNotch: true,
+      color: Colors.blue,
+      child: new Row(children: rowContent),
+    );
+  }
+
+}
+
+// для отправки письма с текстом характеристики
+_launchURL() async {
+  String body = character.join("\n");
+  var url = 'mailto:?'
+      'subject=Текст характеристики - черновик'
+      +'&body='+body;
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
+
+//TODO добавить функционал получения разрешений на запись и чтение
+
+class CustomBottomAppBar extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> rowContent = <Widget> [
+      new IconButton(
+          icon: const Icon(Icons.menu),
+          color: Colors.white,
+          onPressed: (){
+          }),
+    ];
+    return new BottomAppBar(
+      hasNotch: true,
+      color: Colors.blue,
+      child: new Row(children: rowContent),
+    );
+  }
+}
+
+class BottomAppBarSavePage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> rowContent = <Widget> [
+      new IconButton(
+          icon: const Icon(Icons.home),
+          color: Colors.white,
+          onPressed: (){
+          }),
+    ];
+    return new BottomAppBar(
+      hasNotch: false,
+      color: Colors.blue,
+      child: new Row(children: rowContent),
+    );
   }
 }
 
@@ -445,13 +705,13 @@ List<Entry> data = <Entry>[
         new Entry(false,'Постоянно допускает в работе грубейшие ошибки.'),
       ]),
       new Entry(false,'Отношение к нововведениям', <Entry>[
-          new Entry(false,'Любит различные нововведения и реорганизации. Но не любит работать в нормальном спокойном режиме.'),
-          new Entry(false,'Порой излишне увлекается различными новшествами и реорганизациями в ущерб текущей работе.'),
-          new Entry(false,'Стремится вовремя поддержать любое начинание.'),
-          new Entry(false,'Может поддержать полезное начинание, хотя не особенно любит различные нововведения и реорганизации.'),
-          new Entry(false,'Порой проявляет изливший консерватизм, не любит различных нововведений и реорганизаций.'),
-          new Entry(false,'Проявляет крайний консерватизм, выступает против всякого нововведения.'),
-        ],
+        new Entry(false,'Любит различные нововведения и реорганизации. Но не любит работать в нормальном спокойном режиме.'),
+        new Entry(false,'Порой излишне увлекается различными новшествами и реорганизациями в ущерб текущей работе.'),
+        new Entry(false,'Стремится вовремя поддержать любое начинание.'),
+        new Entry(false,'Может поддержать полезное начинание, хотя не особенно любит различные нововведения и реорганизации.'),
+        new Entry(false,'Порой проявляет изливший консерватизм, не любит различных нововведений и реорганизаций.'),
+        new Entry(false,'Проявляет крайний консерватизм, выступает против всякого нововведения.'),
+      ],
       ),
       new Entry(false,'Выполнение сложных заданий', <Entry>[
         new Entry(false,'Может успешно выполнять самые сложные задания, справляется с работой, практически, любой сложности.'),
@@ -510,66 +770,66 @@ List<Entry> data = <Entry>[
     ],
   ),
   new Entry(false, '6. Организация личного труда',
-    <Entry>[
-      new Entry(false,'Использование рабочего времени', <Entry>[
-        new Entry(false,'Очень плотно использует свой рабочий день, умеет правильно распределить время и силы на выполнение порученной работы.'),
-        new Entry(false,'Умеет ценить и правильно распределить свое рабочее время.'),
-        new Entry(false,'В основном правильно распределяет и использует свое рабочее время.'),
-        new Entry(false,'Не умеет рационально распределять и использовать свое рабочее время, что приводит к неисполнительности.'),
-        new Entry(false,'Недобросовестно относится к исполнению служебных обязанностей, допускает факты бесцельного времяпровождения на работе.')
-    ]),
-    new Entry(false,'Решительность', <Entry>[
-      new Entry(false,'Действует решительно, решения принимает быстро, без промедления.'),
-      new Entry(false,'Действует решительно, решения принимает своевременно.'),
-      new Entry(false,'Не всегда хватает решительности для принятия своевременных решений.'),
-      new Entry(false,'Действует несколько нерешительно, не всегда может своевременно принять необходимое решение.'),
-      new Entry(false,'Действует нерешительно, не может своевременно принимать необходимые решения, останавливаться на чем-то определенном.'),
-      new Entry(false,'Крайне нерешительный человек, долго колеблется, прежде чем решить самый простой вопрос.')
-    ]),
-    new Entry(false,'Координация действий рабочих групп', <Entry>[
-      new Entry(false,'Прекрасно справляется с вопросами координации действий различных работников или подразделений, умело согласовывает их интересы даже в весьма затруднительных случаях.'),
-      new Entry(false,'Хорошо справляется с вопросами координации, умеет находить приемлемые решения при согласовании интересов различных работников или подразделений.'),
-      new Entry(false,'Может справляться с вопросами координации действий различных работников или подразделений.'),
-      new Entry(false,'Не всегда хорошо справляется с вопросами координации действий различных работников или подразделений.'),
-      new Entry(false,'Не справляется с вопросами координации действий различных работников или подразделений.'),
-      new Entry(false,'Совершенно не справляется с вопросами координации действий различных работников или подразделений, проявляет абсолютную беспомощность в этом отношении.')
-    ]),
-    new Entry(false,'Контроль за ходом работ', <Entry>[
-      new Entry(false,'Может держать под своим контролем массу дел, держать в поле зрения массу деталей, вовремя реагировать на любое отклонение от плана.'),
-      new Entry(false,'Может и умело осуществляет правильный и своевременный контроль за ходом дел.'),
-      new Entry(false,'Может держать под своим контролем основные моменты в ходе работы.'),
-      new Entry(false,'Не всегда умеет осуществить своевременный контроль за ходом дел, может контролировать лишь отдельные моменты.'),
-      new Entry(false,'Не умеет осуществлять контроль за ходом дел.'),
-      new Entry(false,'Совершенно не может осуществлять какой-либо контроль за ходом дел.')
-    ]),
-  ]),
+      <Entry>[
+        new Entry(false,'Использование рабочего времени', <Entry>[
+          new Entry(false,'Очень плотно использует свой рабочий день, умеет правильно распределить время и силы на выполнение порученной работы.'),
+          new Entry(false,'Умеет ценить и правильно распределить свое рабочее время.'),
+          new Entry(false,'В основном правильно распределяет и использует свое рабочее время.'),
+          new Entry(false,'Не умеет рационально распределять и использовать свое рабочее время, что приводит к неисполнительности.'),
+          new Entry(false,'Недобросовестно относится к исполнению служебных обязанностей, допускает факты бесцельного времяпровождения на работе.')
+        ]),
+        new Entry(false,'Решительность', <Entry>[
+          new Entry(false,'Действует решительно, решения принимает быстро, без промедления.'),
+          new Entry(false,'Действует решительно, решения принимает своевременно.'),
+          new Entry(false,'Не всегда хватает решительности для принятия своевременных решений.'),
+          new Entry(false,'Действует несколько нерешительно, не всегда может своевременно принять необходимое решение.'),
+          new Entry(false,'Действует нерешительно, не может своевременно принимать необходимые решения, останавливаться на чем-то определенном.'),
+          new Entry(false,'Крайне нерешительный человек, долго колеблется, прежде чем решить самый простой вопрос.')
+        ]),
+        new Entry(false,'Координация действий рабочих групп', <Entry>[
+          new Entry(false,'Прекрасно справляется с вопросами координации действий различных работников или подразделений, умело согласовывает их интересы даже в весьма затруднительных случаях.'),
+          new Entry(false,'Хорошо справляется с вопросами координации, умеет находить приемлемые решения при согласовании интересов различных работников или подразделений.'),
+          new Entry(false,'Может справляться с вопросами координации действий различных работников или подразделений.'),
+          new Entry(false,'Не всегда хорошо справляется с вопросами координации действий различных работников или подразделений.'),
+          new Entry(false,'Не справляется с вопросами координации действий различных работников или подразделений.'),
+          new Entry(false,'Совершенно не справляется с вопросами координации действий различных работников или подразделений, проявляет абсолютную беспомощность в этом отношении.')
+        ]),
+        new Entry(false,'Контроль за ходом работ', <Entry>[
+          new Entry(false,'Может держать под своим контролем массу дел, держать в поле зрения массу деталей, вовремя реагировать на любое отклонение от плана.'),
+          new Entry(false,'Может и умело осуществляет правильный и своевременный контроль за ходом дел.'),
+          new Entry(false,'Может держать под своим контролем основные моменты в ходе работы.'),
+          new Entry(false,'Не всегда умеет осуществить своевременный контроль за ходом дел, может контролировать лишь отдельные моменты.'),
+          new Entry(false,'Не умеет осуществлять контроль за ходом дел.'),
+          new Entry(false,'Совершенно не может осуществлять какой-либо контроль за ходом дел.')
+        ]),
+      ]),
   new Entry(false, '7. Скромность',
-    <Entry>[
-      new Entry(false,'Использование служебного положения', <Entry>[
-        new Entry(false,'В личном поведении совершенно безупречный человек, ни в коем случае не допускающий использования служебного положения в неделовых целях.'),
-        new Entry(false,'В личном поведении проявляет скромность, не допускает использования своего положения в личных целях.'),
-        new Entry(false,'Проявлений нескромности в использовании своего служебного положения не допускает.'),
-        new Entry(false,'Отмечены отдельные проявления личной нескромности в использовании своего служебного положения.'),
-        new Entry(false,'Иногда проявляет нескромность в использовании своего служебного положения в личных целях.'),
-        new Entry(false,'Неоднократно допускались факты злоупотребления служебным положением в личных целях.')
-      ]),
-      new Entry(false,'Превышение полномочий', <Entry>[
-        new Entry(false,'Постоянно превышает свои полномочия, свои права и власть, как будто они ничем не ограничены.'),
-        new Entry(false,'В работе часто превышает свои полномочия, свои права и власть.'),
-        new Entry(false,'Отмечены случаи превышения полномочий при исполнении служебных обязанностей, неумеренного использования своих прав и власти.'),
-        new Entry(false,'Умело применяет в работе свои полномочия, права и власть, никогда их не превышает.'),
-        new Entry(false,'Недостаточно использует свои полномочия, свои права и власть, иногда даже в тех случаях, когда это необходимо делать более решительно.'),
-        new Entry(false,'Совершенно не умеет использовать своих полномочий, прав и власти, производя впечатление беспомощности и бесправности.')
-      ]),
-      new Entry(false,'Поведение в быту', <Entry>[
-        new Entry(false,'В моральном отношении совершенно безупречный человек, скромный в быту.'),
-        new Entry(false,'В быту ведет себя скромно, отличается моральной устойчивостью.'),
-        new Entry(false,'В моральном плане отклонений не отмечается, жалобы на неправильное поведение в быту отсутствуют.'),
-        new Entry(false,'Имеются сведения о неправильном поведении в быту, моральной неустойчивости.'),
-        new Entry(false,'Имеются серьезные жалобы на моральную неустойчивость, неправильное поведение в быту.'),
-        new Entry(false,'Своим аморальным поведением разлагает коллектив.')
-      ]),
-    ]
+      <Entry>[
+        new Entry(false,'Использование служебного положения', <Entry>[
+          new Entry(false,'В личном поведении совершенно безупречный человек, ни в коем случае не допускающий использования служебного положения в неделовых целях.'),
+          new Entry(false,'В личном поведении проявляет скромность, не допускает использования своего положения в личных целях.'),
+          new Entry(false,'Проявлений нескромности в использовании своего служебного положения не допускает.'),
+          new Entry(false,'Отмечены отдельные проявления личной нескромности в использовании своего служебного положения.'),
+          new Entry(false,'Иногда проявляет нескромность в использовании своего служебного положения в личных целях.'),
+          new Entry(false,'Неоднократно допускались факты злоупотребления служебным положением в личных целях.')
+        ]),
+        new Entry(false,'Превышение полномочий', <Entry>[
+          new Entry(false,'Постоянно превышает свои полномочия, свои права и власть, как будто они ничем не ограничены.'),
+          new Entry(false,'В работе часто превышает свои полномочия, свои права и власть.'),
+          new Entry(false,'Отмечены случаи превышения полномочий при исполнении служебных обязанностей, неумеренного использования своих прав и власти.'),
+          new Entry(false,'Умело применяет в работе свои полномочия, права и власть, никогда их не превышает.'),
+          new Entry(false,'Недостаточно использует свои полномочия, свои права и власть, иногда даже в тех случаях, когда это необходимо делать более решительно.'),
+          new Entry(false,'Совершенно не умеет использовать своих полномочий, прав и власти, производя впечатление беспомощности и бесправности.')
+        ]),
+        new Entry(false,'Поведение в быту', <Entry>[
+          new Entry(false,'В моральном отношении совершенно безупречный человек, скромный в быту.'),
+          new Entry(false,'В быту ведет себя скромно, отличается моральной устойчивостью.'),
+          new Entry(false,'В моральном плане отклонений не отмечается, жалобы на неправильное поведение в быту отсутствуют.'),
+          new Entry(false,'Имеются сведения о неправильном поведении в быту, моральной неустойчивости.'),
+          new Entry(false,'Имеются серьезные жалобы на моральную неустойчивость, неправильное поведение в быту.'),
+          new Entry(false,'Своим аморальным поведением разлагает коллектив.')
+        ]),
+      ]
   ),
   new Entry(false, '8. Умение сплотить коллектив',
       <Entry>[
@@ -806,184 +1066,3 @@ List<Entry> data = <Entry>[
       ]
   ),
 ];
-
-class CharacterText extends StatefulWidget {
-
-  @override
-  _CharacterText createState() {
-    return new _CharacterText();
-  }
-
-}
-//Выводит на экран текст характеристики и кнопки записи
-class _CharacterText extends State<CharacterText>{
-
-  final myController = new TextEditingController();
-  @override
-  void dispose() {
-    // Clean up the controller when the Widget is disposed
-    myController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: const Text('Характеристика'),
-      ),
-      body: new Padding(
-        padding: const EdgeInsets.all(14.0),
-        child: new Column(
-          children: <Widget>[
-            new Expanded(
-              child: new ListView.builder(
-                  itemCount: character.length,
-                  itemBuilder: (context, index){
-                    return new ListTile(
-                      title: new Text(character[index]),
-                    );
-                  }),
-            ),
-            //TODO Ограничить количество символов названия файла
-/*
-            new RaisedButton(
-              onPressed: () {
-              },
-              child: new Text('Сохранить в файл',
-                style: new TextStyle(fontSize: 16.0),),
-            )
-*/
-          ],
-        ),
-      ),
-      bottomNavigationBar: CustomBABPage(),
-      floatingActionButton: new FloatingActionButton(
-          onPressed: (){
-            String filename = 'Введите имя файла:';
-            showDialog(context: context,
-                builder: (BuildContext context){
-                  return new AlertDialog(
-                    title: new Text(filename),
-                    content: new TextField(
-                      controller: myController,
-                      decoration: new InputDecoration(
-                          hintText: 'имя файла'
-                      ),
-                    ),
-                    actions: <Widget>[
-                      new FlatButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: new Text('Отмена',
-                            style: new TextStyle(
-                                color: Colors.red
-                            ),)
-                      ),
-
-                      //TODO сделать проверку занятости имени файла
-                      new FlatButton(
-                          onPressed: (){
-                            String filename1 = myController.text;
-                            print(filename1);
-                            filenames.add(filename1);
-                            String content = character.join("\n");
-                            FileManager(filenames)
-                                .writeCharacteristic(content);
-                            Navigator.pop(context);
-                          },
-                          child: new Text('Сохранить'))
-                    ],
-                  );
-                }
-            );
-          },
-        child: new Icon(Icons.save),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked ,
-    );
-  }
-  }
-
-class CustomBABPage extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> rowContent = <Widget> [
-      new IconButton(
-          icon: const Icon(Icons.home),
-          color: Colors.white,
-          onPressed: (){
-            Navigator.push(context,
-            new MaterialPageRoute(
-                builder: (context) => new CharacteristList()
-            ));
-          }),
-
-      new IconButton(
-          icon: const Icon(Icons.mail),
-          color: Colors.white,
-          onPressed: (){
-            _launchURL();
-          })
-
-    ];
-    return new BottomAppBar(
-      hasNotch: true,
-      color: Colors.blue,
-      child: new Row(children: rowContent),
-    );
-  }
-
-}
-
-// для отправки письма с текстом характеристики
-_launchURL() async {
-  String body = character.join("\n");
-  var url = 'mailto:?'
-      'subject=Текст характеристики - черновик'
-      +'&body='+body;
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
-  }
-}
-
-
-//TODO добавить функционал получения разрешений на запись и чтение
-
-class CustomBottomAppBar extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> rowContent = <Widget> [
-      new IconButton(
-          icon: const Icon(Icons.menu),
-          color: Colors.white,
-          onPressed: (){
-          }),
-    ];
-    return new BottomAppBar(
-      hasNotch: true,
-      color: Colors.blue,
-      child: new Row(children: rowContent),
-    );
-  }
-}
-
-class BottomAppBarSavePage extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> rowContent = <Widget> [
-      new IconButton(
-          icon: const Icon(Icons.home),
-          color: Colors.white,
-          onPressed: (){
-          }),
-    ];
-    return new BottomAppBar(
-      hasNotch: false,
-      color: Colors.blue,
-      child: new Row(children: rowContent),
-    );
-  }
-}
-
