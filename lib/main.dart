@@ -62,7 +62,7 @@ class StartPage extends StatelessWidget {
                         );
                       }),
                 ),
-                new Divider(),
+                new SizedBox(height: 16.0,),
                 new SizedBox(
                   height: 40.0,
                   width: 200.0,
@@ -80,7 +80,7 @@ class StartPage extends StatelessWidget {
                           context,
                           new MaterialPageRoute(
                               maintainState: false,
-                              builder: (context) => new CharacteristicSkills()),
+                              builder: (context) => new StartScreen()),
                         );
                       }),
                 )
@@ -94,7 +94,7 @@ class StartPage extends StatelessWidget {
   Future<List<String>>_inFutureList() async{
     var filesList = new List<String>();
     filesList = await FilesInDirectory().getFilesFromDir();
-    await new Future.delayed(new Duration(milliseconds: 1000));
+//    await new Future.delayed(new Duration(milliseconds: 500));
     return filesList;
   }
 }
