@@ -106,9 +106,7 @@ class CharacteristList extends StatefulWidget {
   }
 
   @override
-  CharacteristListState createState() {
-    return new CharacteristListState();
-  }
+  CharacteristListState createState() => new CharacteristListState();
 
   Widget customBuild(BuildContext context, List<String> snapshot){
     List<String> values = snapshot;
