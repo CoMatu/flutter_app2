@@ -43,7 +43,7 @@ class StartPage extends StatelessWidget {
 */
                 new SizedBox(
                   height: 40.0,
-                  width: 200.0,
+                  width: 220.0,
                   child: new RaisedButton(
                       elevation: 4.0,
                       color: Colors.orange,
@@ -65,12 +65,12 @@ class StartPage extends StatelessWidget {
                 new SizedBox(height: 16.0,),
                 new SizedBox(
                   height: 40.0,
-                  width: 200.0,
+                  width: 220.0,
                   child: new RaisedButton(
                       elevation: 4.0,
                       color: Colors.orange,
                       highlightColor: Colors.orangeAccent,
-                      child: new Text('Новый документ',
+                      child: new Text('Новая характеристика',
                         style: new TextStyle(
                             fontSize: 16.0,
                             color: Colors.white
@@ -453,7 +453,6 @@ class CustomBABPage extends StatelessWidget{
 
     ];
     return new BottomAppBar(
-      hasNotch: true,
       color: Colors.blue,
       child: new Row(children: rowContent),
     );
@@ -488,7 +487,6 @@ class CustomBottomAppBar extends StatelessWidget{
           }),
     ];
     return new BottomAppBar(
-      hasNotch: true,
       color: Colors.blue,
       child: new Row(children: rowContent),
     );
@@ -506,7 +504,6 @@ class BottomAppBarSavePage extends StatelessWidget{
           }),
     ];
     return new BottomAppBar(
-      hasNotch: false,
       color: Colors.blue,
       child: new Row(children: rowContent),
     );
