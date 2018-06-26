@@ -330,7 +330,6 @@ class _EntryItemState extends State<EntryItem> {
   }
 }
 
-
 class CharacterText extends StatefulWidget {
 
   @override
@@ -470,7 +469,6 @@ _launchURL() async {
     throw 'Could not launch $url';
   }
 }
-
 
 //TODO добавить функционал получения разрешений на запись и чтение
 
