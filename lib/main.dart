@@ -22,9 +22,6 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-      return new FutureBuilder(
-        future: _inFutureList(),
-          builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot){
           return new Scaffold(
             body:
             new Column(
@@ -35,12 +32,6 @@ class StartPage extends StatelessWidget {
                       fontSize: 20.0
                   ),),
                 new Image.asset(imagename),
-/*
-          new SizedBox(
-            width: 200.0,
-            child: new LinearProgressIndicator(),
-          ),
-*/
                 new SizedBox(
                   height: 40.0,
                   width: 220.0,
@@ -58,7 +49,7 @@ class StartPage extends StatelessWidget {
                           context,
                           new MaterialPageRoute(
                               maintainState: false,
-                              builder: (context) => new CharacteristList(snapshot.data)),
+                              builder: (context) => new CharacteristList()),
                         );
                       }),
                 ),
@@ -76,6 +67,7 @@ class StartPage extends StatelessWidget {
                             color: Colors.white
                         ),),
                       onPressed: () {
+                        //TODO сделать обнулить все выборы чекбосков в списке перед созданием новой характеристики
                         Navigator.push(
                           context,
                           new MaterialPageRoute(
@@ -88,39 +80,38 @@ class StartPage extends StatelessWidget {
             )
 
           );
-          },
-      );
   }
+}
+
+class CharacteristList extends StatefulWidget {
+
+  @override
+  CharacteristListState createState() => new CharacteristListState();
+
+  Widget customBuild(BuildContext context){
+    return new FutureBuilder(
+        future: _inFutureList(),
+        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot){
+          return new Container(
+              child: new Expanded(
+                child: new ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index){
+                    return new CharacteristListItem(snapshot.data[index]);
+                  },
+                ),
+              )
+          );
+
+        }
+    );
+  }
+
   Future<List<String>>_inFutureList() async{
     var filesList = new List<String>();
     filesList = await FilesInDirectory().getFilesFromDir();
 //    await new Future.delayed(new Duration(milliseconds: 500));
     return filesList;
-  }
-}
-
-class CharacteristList extends StatefulWidget {
-  List<String> list_character;
-  CharacteristList(List<String> list_character){
-    this.list_character = list_character;
-  }
-
-  @override
-  CharacteristListState createState() => new CharacteristListState();
-//TODO Вынести сюда future builder чтобы он запускался из любого места кода
-
-  Widget customBuild(BuildContext context, List<String> snapshot){
-    List<String> values = snapshot;
-    return new Container(
-        child: new Expanded(
-          child: new ListView.builder(
-            itemCount: values.length,
-            itemBuilder: (context, index){
-              return new CharacteristListItem(values[index]);
-            },
-          ),
-        )
-    );
   }
 
 }
@@ -137,7 +128,7 @@ class CharacteristListState extends State<CharacteristList> {
       body: new Center(
         child: new Column(
           children: <Widget>[
-            widget.customBuild(context, widget.list_character)
+            widget.customBuild(context)
           ],
         ),
       ),
