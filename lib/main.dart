@@ -92,17 +92,25 @@ class CharacteristList extends StatefulWidget {
     return new FutureBuilder(
         future: _inFutureList(),
         builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot){
-          return new Container(
-              child: new Expanded(
-                child: new ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index){
-                    return new CharacteristListItem(snapshot.data[index]);
-                  },
-                ),
-              )
-          );
-
+          switch (snapshot.connectionState){
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            return new Text('загрузка...');
+            default:
+              if(snapshot.hasError)
+                return new Text('ошибка получения списка документов');
+              else
+                return new Container(
+                    child: new Expanded(
+                      child: new ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index){
+                          return new CharacteristListItem(snapshot.data[index]);
+                        },
+                      ),
+                    )
+                );
+          }
         }
     );
   }
