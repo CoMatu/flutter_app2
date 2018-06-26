@@ -17,7 +17,6 @@ void main() => runApp(new MaterialApp(
 
 class StartPage extends StatelessWidget {
   var imagename = 'assets/letter.png';
-  var list_char = new List<String>();
 
   @override
   Widget build(BuildContext context) {

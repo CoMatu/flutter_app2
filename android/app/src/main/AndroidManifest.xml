@@ -16,8 +16,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_app2"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Характеристика"
+        android:icon="@mipmap/icon_charact">
         <activity
             android:screenOrientation="portrait"
             android:name=".MainActivity"
