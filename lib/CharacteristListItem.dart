@@ -12,7 +12,8 @@ var characteristic = new List<String>();
 class CharacteristListItem extends StatelessWidget {
   final String charactTitle;
 
-  CharacteristListItem(String charactTitle) : charactTitle = charactTitle;
+  CharacteristListItem(String charactTitle)
+      : charactTitle = charactTitle, super(key: new ObjectKey(charactTitle));
 
   @override
   Widget build(BuildContext context) {
@@ -101,13 +102,13 @@ class CharacteristListItem extends StatelessWidget {
                           ),
                           onPressed: () {
                             deleteCharacteristic(charactPath);
-/*
+
                             Navigator.push(
                               context,
                               new MaterialPageRoute(
                                   builder: (context) => new CharacteristList()),
                             );
-*/
+
                           })
                     ],
                   )

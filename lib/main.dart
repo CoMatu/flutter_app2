@@ -107,6 +107,7 @@ class CharacteristList extends StatefulWidget {
 
   @override
   CharacteristListState createState() => new CharacteristListState();
+//TODO Вынести сюда future builder чтобы он запускался из любого места кода
 
   Widget customBuild(BuildContext context, List<String> snapshot){
     List<String> values = snapshot;
