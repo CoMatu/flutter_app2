@@ -38,9 +38,9 @@ android {
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['22ll55']
+            keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['22ll55']
+            storePassword keystoreProperties['storePassword']
         }
     }
     buildTypes {
