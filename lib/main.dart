@@ -23,8 +23,8 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
           return new Scaffold(
-            body:
-            new Column(
+            appBar: new AppBar(),
+            body: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text('ХАРАКТЕРИСТИКА 1.0',
@@ -173,7 +173,11 @@ class StartScreen extends StatelessWidget {
             child: new Column(
               children: <Widget>[
                 new Image.asset('assets/letter.png'),
-                new Text('На следующей странице в раскрывающемся списке выберите одну или несколько компетенций для оценки. Для выбора нажмите "галочку", для отмены - повторное нажатие.',
+                new Text(
+                  'На следующей странице в раскрывающемся списке выберите '
+                      'одну или несколько компетенций для оценки. Для выбора'
+                      ' нажмите "галочку", для отмены - нажмите еще раз',
+                textAlign: TextAlign.center,
                 style: new TextStyle(
                   color: Colors.black87,
                   fontSize: 18.0
@@ -291,9 +295,8 @@ class _EntryItemState extends State<EntryItem> {
 
   Widget _buildTiles(Entry root) {
     if (root.children.isEmpty)
-      return new Column(
-        children: <Widget>[
-          new CheckboxListTile(
+      return new CheckboxListTile(
+        key: new PageStorageKey<Entry>(root),
             title: new Text(
               root.title,
               style: new TextStyle(fontSize: 14.0),
@@ -305,10 +308,7 @@ class _EntryItemState extends State<EntryItem> {
                 charactToList(root);
               });
             },
-          ),
-          new Divider(height: 16.0, indent: 0.0),
-        ],
-      );
+          );
 //      return new Divider();
     return new ExpansionTile(
       key: new PageStorageKey<Entry>(root),
