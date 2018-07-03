@@ -17,7 +17,6 @@ void main() => runApp(new MaterialApp(
 
 class StartPage extends StatelessWidget {
   var imagename = 'assets/letter.png';
-  var list_char = new List<String>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,6 @@ class StartPage extends StatelessWidget {
                       highlightColor: Colors.orangeAccent,
                       child: new Text('К списку документов',
                         style: new TextStyle(
-                            fontSize: 16.0,
                             color: Colors.white
                         ),),
                       onPressed: () {
@@ -63,7 +61,6 @@ class StartPage extends StatelessWidget {
                       highlightColor: Colors.orangeAccent,
                       child: new Text('Новая характеристика',
                         style: new TextStyle(
-                            fontSize: 16.0,
                             color: Colors.white
                         ),),
                       onPressed: () {
