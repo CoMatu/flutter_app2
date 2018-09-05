@@ -211,9 +211,23 @@ class StartScreen extends StatelessWidget {
   }
 }
 
-class CharacteristicSkills extends StatelessWidget {
-  get context => context;
+class CharacteristicSkills extends StatefulWidget {
+  @override
+  CharacteristicSkillsState createState() {
+    return new CharacteristicSkillsState();
+  }
+}
 
+class CharacteristicSkillsState extends State<CharacteristicSkills> {
+  get context => context;
+  bool groupValue = false;
+
+void checkSkill()
+{
+  setState(() {
+    groupValue = true;
+  });
+}
   @override
   Widget build(BuildContext context) {
       return new Scaffold(
@@ -226,7 +240,7 @@ class CharacteristicSkills extends StatelessWidget {
             children: <Widget>[
               new Expanded(
                   child: new ListView.builder(
-                    itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
+                    itemBuilder: (BuildContext context, int index) => new EntryItem(data[index], groupValue),
                     itemCount: data.length,
                   ),
               ),
@@ -273,9 +287,9 @@ class CharacteristicSkills extends StatelessWidget {
 }
 
 class EntryItem extends StatefulWidget {
-
+  final bool groupValue;
   final Entry entry;
-  const EntryItem(this.entry);
+  const EntryItem(this.entry, this.groupValue);
   @override
   _EntryItemState createState() {
     return new _EntryItemState(entry);
@@ -283,29 +297,36 @@ class EntryItem extends StatefulWidget {
 }
 
 class _EntryItemState extends State<EntryItem> {
-  //TODO: Сделать условие для выбора только ОДНОГО чекбокса
-
   Entry entry;
+  bool groupValue;
   _EntryItemState(Entry entry){
     this.entry = entry;
+    this.groupValue = groupValue;
   }
 
   Widget _buildTiles(Entry root) {
-    if (root.children.isEmpty)
-      return new CheckboxListTile(
-        key: new PageStorageKey<Entry>(root),
-            title: new Text(
-              root.title,
-              style: new TextStyle(fontSize: 14.0),
-            ),
-            value: root.isChecked,
-            onChanged: (bool value) {
-              setState(() {
-                root.isChecked = value;
-                charactToList(root);
-              });
-            },
-          );
+    if (root.children.isEmpty){
+
+      return new Card(
+        child: RadioListTile(
+          key: new PageStorageKey<Entry>(root),
+          groupValue: groupValue,
+          title: new Text(
+            root.title,
+            style: new TextStyle(fontSize: 14.0),
+          ),
+          value: true,
+          onChanged: (bool value) {
+            groupValue = true;
+            //TODO сделать условие выбора одного чекбокса
+            _charactToList(root, value);
+          },
+        )
+        ,
+      );
+
+
+    }
 //      return new Divider();
     return new ExpansionTile(
       key: new PageStorageKey<Entry>(root),
@@ -317,13 +338,16 @@ class _EntryItemState extends State<EntryItem> {
   Widget build(BuildContext context) {
     return _buildTiles(entry);
   }
-  void charactToList (Entry root){
-    if(root.isChecked){
+  void _charactToList (Entry root, bool value){
+    if(value == true){
+//      CharacteristicSkillsState().checkSkill();
       character.add(root.title);
     }
+/*
     if(!root.isChecked){
       character.remove(root.title);
     }
+*/
   }
 }
 
@@ -515,9 +539,7 @@ List<Entry> data = <Entry>[
   new Entry(false,
     '1. Компетентность',
     <Entry>[
-      new Entry(false,
-          'Опыт работы и практические знания',
-          <Entry>[
+      new Entry(false, 'Опыт работы и практические знания',  <Entry>[
             new Entry(false,"Обладает исключительно большим опытом работы, большими практическими знаниями, такой опыт и такова практика имеются далеко не у каждого."),
             new Entry(false,"Обладает большим опытом работы и большими практическими знаниями."),
             new Entry(false,"Обладает достаточным опытом работы и практическими знаниями, чтобы успешно справляться с порученным делом."),
